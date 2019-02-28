@@ -1,0 +1,31 @@
+import javaposse.jobdsl.dsl.*
+import  javaposse.jobdsl.plugin.*
+
+JenkinsJobManagement jm = new JenkinsJobManagement(System.out, [:], new File('.'));
+DslScriptLoader dslScriptLoader = new DslScriptLoader(jm)
+
+def data = """
+job('seed-jobs') {
+
+       logRotator {
+       daysToKeep(90)
+   }
+
+   multiscm {
+     git {
+       remote {
+         url("<%= @job_seed_repo %>")
+       }
+     }
+   }
+
+   steps {
+    dsl {
+         external "jobs/seed_jobs.groovy"
+       }
+   }
+}
+
+"""
+
+dslScriptLoader.runScript(data)

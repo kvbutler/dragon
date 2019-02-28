@@ -1,0 +1,230 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS CloudFormation template that will deploy Jenkins ec2 instance configured by Chef'
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  VpcId:
+    Description: vpc id of the existing virtual private cloud
+    Type: AWS::EC2::VPC::Id
+    ConstraintDescription: must be the id of an existing vpc
+  SubnetId:
+    Description: subnet id of the existing virtual private cloud
+    Type: AWS::EC2::Subnet::Id
+    ConstraintDescription: must be the id of an existing subnet
+  InstanceType:
+    Description: Jenkins EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - t3.medium
+      - t3.large
+    ConstraintDescription: must be a valid EC2 instance type.
+  ImageId:
+    Description: Latest Amazon2 ami AMI ID
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+  JenkinsPort:
+    Default: 8080
+    Description: The Jenkins Port
+    Type: Number
+    MinValue: 0
+    MaxValue: 65535
+    ConstraintDescription: TCP ports must be between 0 - 65535
+  JenkinsUser:
+    Description: Jenkins user name
+    Type: String
+  JenkinsPassword:
+    Description: Jenkins password
+    Type: String
+    Default: /aws/reference/secretsmanager/JenkinsPassword
+    NoEcho: true
+Resources:
+  JenkinsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access via port Jenkins port locked down to the load balancer + SSH access
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref JenkinsPort
+          ToPort: !Ref JenkinsPort
+          CidrIp: '0.0.0.0/0'
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: '0.0.0.0/0'
+  JenkinsRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+        - "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
+  JenkinsRolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "jenkins_policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - "es:*"
+              - "cloudformation:*"
+              - "sns:*"
+              - "sqs:*"
+              - "ses:*"
+              - "route53:*"
+              - "iam:*"
+              - "codepipeline:*"
+              - "codedeploy:*"
+            Resource: "*"
+      Roles:
+        -
+          Ref: "JenkinsRole"
+  JenkinsInstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Path: "/"
+      Roles:
+        -
+          Ref: "JenkinsRole"
+  Jenkins:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          jenkins_install:
+            - install_cfn
+            - setup_jenkins
+        install_cfn:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Join ['', ['[main]
+
+                    ', stack=, !Ref 'AWS::StackId', '
+
+                    ', region=, !Ref 'AWS::Region', '
+
+                    ']]
+              mode: '000400'
+              owner: root
+              group: root
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
+              content: !Join ['', ['[cfn-auto-reloader-hook]
+
+                    ', 'triggers=post.update
+
+                    ', 'path=Resources.Jenkins.Metadata.AWS::CloudFormation::Init
+
+                    ', 'action=/opt/aws/bin/cfn-init -v ', '         --stack ', !Ref 'AWS::StackName',
+                  '         --resource Jenkins ', '         --configsets jenkins_install ',
+                  '         --region ', !Ref 'AWS::Region', '
+
+                    ']]
+              mode: '000400'
+              owner: root
+              group: root
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: 'true'
+                ensureRunning: 'true'
+                files:
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+        setup_jenkins:
+          packages:
+            yum:
+              tmux: []
+              git: []
+          # sources:
+          #     /home/ec2-user/tarball: 'tarball'
+          files:
+            /tmp/env_vars:
+              content: !Sub |
+                export JENKINS_USER=${JenkinsUser}
+                export JENKINS_PASSWORD=${JenkinsPassword}
+          commands:
+            01_download_chef:
+              command: "wget -O /tmp/chefdk.rpm https://packages.chef.io/files/stable/chefdk/3.7.23/el/7/chefdk-3.7.23-1.el7.x86_64.rpm"
+            02_install_chef:
+              command: "rpm -ivh /tmp/chefdk.rpm"
+            03_clone_git_repo:
+              command: "git clone https://github.com/seanjoo/jenkins-cfn-chef.git /opt/jenkins-cfn-chef"
+            04_chef_install_jenkins:
+              command: "sudo bash /opt/jenkins-cfn-chef/install-jenkins.sh"
+    Properties:
+      ImageId: !Ref 'ImageId'
+      InstanceType: !Ref 'InstanceType'
+      IamInstanceProfile: !Ref 'JenkinsInstanceProfile'
+      SecurityGroupIds:
+        - !Ref 'JenkinsSecurityGroup'
+      SubnetId: !Ref SubnetId
+      Monitoring: true
+      KeyName: !Ref 'KeyName'
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 100
+      UserData: !Base64
+        Fn::Join:
+          - ''
+          - - '#!/bin/bash -xe
+
+              '
+            - 'yum update -y aws-cfn-bootstrap
+
+              '
+            - '/opt/aws/bin/cfn-init -v '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource Jenkins '
+            - '         --configsets jenkins_install '
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - '
+
+              '
+            - '/opt/aws/bin/cfn-signal -e $? '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource Jenkins '
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - '
+
+              '
+      Tags:
+        - Key: Name
+          Value: !Ref 'AWS::StackName'
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT30M
+Outputs:
+  WebsiteURL:
+    Value: !Join ['', ['http://', !GetAtt 'Jenkins.PublicDnsName', ':', !Ref JenkinsPort]]
+    Description: Jenkins Website

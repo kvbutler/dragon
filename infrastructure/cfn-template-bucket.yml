@@ -1,0 +1,17 @@
+Description: >
+  This tempalte deploys a s3 bucket used for storing Cloudformation templates
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'cloudformation-${AWS::AccountId}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+Outputs:
+  CfnTemplateBucketName:
+    Description: Name of the created bucket
+    Value: !Ref S3Bucket
+
+#### enable versioning + encryption
