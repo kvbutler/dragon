@@ -44,6 +44,10 @@ Parameters:
     Type: String
     Default: /aws/reference/secretsmanager/JenkinsPassword
     NoEcho: true
+  JenkinsCookbookRepo:
+    Description: git repo containing jenkins config cookbooks
+    Type: String
+    Default: https://github.com/ICFI/dragon.git
 Resources:
   JenkinsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -174,9 +178,9 @@ Resources:
             02_install_chef:
               command: "rpm -ivh /tmp/chefdk.rpm"
             03_clone_git_repo:
-              command: "git clone https://github.com/seanjoo/jenkins-cfn-chef.git /opt/jenkins-cfn-chef"
+              command: !Sub "git clone ${JenkinsCookbookRepo} /opt/jenkins-cfn-chef"
             04_chef_install_jenkins:
-              command: "sudo bash /opt/jenkins-cfn-chef/install-jenkins.sh"
+              command: "sudo bash /opt/jenkins-cfn-chef/jenkins/install-jenkins.sh"
     Properties:
       ImageId: !Ref 'ImageId'
       InstanceType: !Ref 'InstanceType'

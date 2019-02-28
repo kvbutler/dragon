@@ -1,4 +1,4 @@
-export working_dir=/opt/jenkins-cfn-chef
+export working_dir=/opt/jenkins-cfn-chef/jenkins
 pushd ${working_dir}
 
 touch /tmp/env_vars

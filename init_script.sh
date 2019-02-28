@@ -44,18 +44,18 @@ aws cloudformation deploy --template-file ./infrastructure/master.yml \
       EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
       LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
 
-# export vpc=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
-# export public_subnet_1=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnet1") | .OutputValue' -r)
-# export private_subnet_1=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PrivateSubnet1") | .OutputValue' -r)
-# export public_subnets=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnets") | .OutputValue' -r)
-#
-# echo 'Deploying Jenkins'
-# aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
-#   --stack-name ${env_name}-jenkins --region ${region} --no-fail-on-empty-changeset \
-#   --capabilities CAPABILITY_NAMED_IAM \
-#   --parameter-overrides \
-#       KeyName="${ssh_key_pair_name}" \
-#       VpcId="${vpc}"\
-#       SubnetId="${public_subnet_1}" \
-#       InstanceType="${jenkins_instance_type}" \
-#       JenkinsUser="${jenkins_user}"
+export vpc=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
+export public_subnet_1=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnet1") | .OutputValue' -r)
+export private_subnet_1=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PrivateSubnet1") | .OutputValue' -r)
+export public_subnets=$(aws cloudformation describe-stacks --stack-name mdas-prod-infra | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnets") | .OutputValue' -r)
+
+echo 'Deploying Jenkins'
+aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
+  --stack-name ${env_name}-jenkins --region ${region} --no-fail-on-empty-changeset \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides \
+      KeyName="${ssh_key_pair_name}" \
+      VpcId="${vpc}"\
+      SubnetId="${public_subnet_1}" \
+      InstanceType="${jenkins_instance_type}" \
+      JenkinsUser="${jenkins_user}"
