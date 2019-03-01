@@ -5,7 +5,7 @@ pipeline {
 	environment {
 
 		// SCM
-		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/eagle.git"}"
+		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
 		GIT_BRANCH = "${GIT_BRANCH ?: "origin/master"}"
 
 		// Container

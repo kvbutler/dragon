@@ -8,6 +8,7 @@ WORKDIR /app
 # download gradle in a cached layer to save rebuild time
 COPY ./gradlew ./
 COPY ./gradle ./gradle
+chmod +x ./gradlew
 RUN ./gradlew
 
 # get dependencies in a cached layer to save rebuild time
