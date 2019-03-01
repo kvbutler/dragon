@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-export region='us-east-1'
+export AWS_DEFAULT_REGION='us-east-1'
 export env_name='mdas-prod'
 export cfn_template_bucket_stack_name='cfn-template-bucket'
 export ssh_key_pair_name='mdas-ssh-key'
@@ -27,7 +27,7 @@ echo "Validate cfn templates"
 
 echo 'Creating s3 bucket for cfn templates'
 aws cloudformation deploy --template-file ./infrastructure/cfn-template-bucket.yml \
-  --stack-name ${cfn_template_bucket_stack_name} --region ${region} --no-fail-on-empty-changeset
+  --stack-name ${cfn_template_bucket_stack_name}  --no-fail-on-empty-changeset
 
 export bucket_name=$(aws cloudformation describe-stacks --stack-name cfn-template-bucket | jq .Stacks[0].Outputs[0].OutputValue -r)
 
@@ -38,7 +38,7 @@ aws s3 sync ./infrastructure s3://${bucket_name}/${env_name}
 
 echo 'Creating infrastructure'
 # aws cloudformation deploy --template-file ./infrastructure/master.yml \
-#   --stack-name ${env_name} --region ${region} --no-fail-on-empty-changeset \
+#   --stack-name ${env_name}  --no-fail-on-empty-changeset \
 #   --capabilities CAPABILITY_NAMED_IAM \
 #   --parameter-overrides \
 #       VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/vpc.yml) \
@@ -54,7 +54,7 @@ export public_subnets=$(aws cloudformation describe-stacks --stack-name ${env_na
 
 echo 'Deploying Jenkins'
 aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
-  --stack-name ${env_name}-jenkins --region ${region} --no-fail-on-empty-changeset \
+  --stack-name ${env_name}-jenkins  --no-fail-on-empty-changeset \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides \
       KeyName="${ssh_key_pair_name}" \
