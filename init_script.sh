@@ -6,10 +6,8 @@ export cfn_template_bucket_stack_name='cfn-template-bucket'
 export ssh_key_pair_name='mdas-ssh-key'
 export jenkins_user='jenkins'
 export jenkins_instance_type="t2.large"
-## need to export jenkins_password before running this script
 
 #aws secretsmanager create-secret --name JenkinsPassword --description "Jenkins admin password" --secret-string "add your password"
-#need to expo
 #this requires aws cli v1.16.11 - run pip install awscli==1.16.11
 
 echo 'Generating EC2 ssh key pair'
@@ -62,5 +60,5 @@ aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
       LBSubnets="${public_subnets}" \
       InstanceSubnet="${public_subnet_1}" \
       InstanceType="${jenkins_instance_type}" \
-      JenkinsUser="${jenkins_user}"
-      JenkinsPassword="${jenkins_password}"
+      JenkinsUser="${jenkins_user}" \
+      JenkinsPassword="$(aws secretsmanager get-secret-value --secret-id JenkinsPassword | jq .SecretString -r)"

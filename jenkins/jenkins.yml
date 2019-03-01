@@ -237,10 +237,11 @@ Resources:
                 export JENKINS_PASSWORD=${JenkinsPassword}
             /tmp/install_docker.sh:
               content: !Sub |
-                sudo amazon-linux-extras install docker -y
-                sudo service docker start
-                sudo usermod -a -G docker ec2-user
-                sudo usermod -a -G docker jenkins
+                amazon-linux-extras install docker
+                service docker start
+                usermod -a -G docker ec2-user
+                usermod -a -G docker jenkins
+                serivce jenkins restart
           commands:
             01_download_chef:
               command: "wget -O /tmp/chefdk.rpm https://packages.chef.io/files/stable/chefdk/3.7.23/el/7/chefdk-3.7.23-1.el7.x86_64.rpm"
@@ -249,9 +250,9 @@ Resources:
             03_clone_git_repo:
               command: !Sub "git clone ${JenkinsCookbookRepo} /opt/jenkins-cfn-chef"
             04_chef_install_jenkins:
-              command: "bash /opt/jenkins-cfn-chef/jenkins/install-jenkins.sh"
+              command: "sudo bash /opt/jenkins-cfn-chef/jenkins/install-jenkins.sh"
             05_install_docker:
-              command: "bash /tmp/install_docker.sh"
+              command: "sudo bash /tmp/install_docker.sh"
     Properties:
       ImageId: !Ref 'ImageId'
       InstanceType: !Ref 'InstanceType'
