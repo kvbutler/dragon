@@ -10,7 +10,7 @@
   ```
     aws secretsmanager create-secret --name JenkinsPassword --description "Jenkins admin password" --secret-string "somepassword" --region us-east-1
   ```
-  b. Run init.sh (Requires aws cli v1.16.11)
+  b. Run init_script.sh (Requires aws cli v1.16.11)
   ```
     source init_script.sh
   ```
