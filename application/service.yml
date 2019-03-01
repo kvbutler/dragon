@@ -49,8 +49,8 @@ Resources:
       ContainerDefinitions:
         - Name: dragon-service
           Essential: true
-          Image: 275396840892.dkr.ecr.us-east-1.amazonaws.com/ecs-refarch-cloudformation/product-service:1.0.0
-          Memory: 128
+          Image: !Ref ecrImage
+          Memory: 512
           PortMappings:
             - ContainerPort: 8080
           LogConfiguration:
