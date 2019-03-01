@@ -19,6 +19,7 @@ RUN ./gradlew downloadDependencies -Dorg.gradle.daemon=false
 # npm install in a cached layer to save rebuild time
 # TODO: copy in package-lock.json, too
 COPY ./package.json ./
+COPY ./package-lock.json ./
 COPY ./webpack.config.js ./
 RUN ./gradlew clean npmInstall -Dorg.gradle.daemon=false
 
