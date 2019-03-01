@@ -166,6 +166,7 @@ Resources:
               - "iam:*"
               - "codepipeline:*"
               - "codedeploy:*"
+              - "ssm:*"
             Resource: "*"
       Roles:
         -
@@ -226,6 +227,7 @@ Resources:
             yum:
               tmux: []
               git: []
+              jq: []
           # sources:
           #     /home/ec2-user/tarball: 'tarball'
           files:
