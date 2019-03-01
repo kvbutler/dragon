@@ -21,7 +21,7 @@ else
 fi
 
 echo "Validate cfn templates"
-./tests/validate-templates.sh
+#./tests/validate-templates.sh
 
 echo 'Creating s3 bucket for cfn templates'
 aws cloudformation deploy --template-file ./infrastructure/cfn-template-bucket.yml \
