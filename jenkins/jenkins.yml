@@ -167,6 +167,7 @@ Resources:
               - "codepipeline:*"
               - "codedeploy:*"
               - "ssm:*"
+              - "secretsmanager:*"
             Resource: "*"
       Roles:
         -
