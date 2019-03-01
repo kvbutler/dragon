@@ -88,7 +88,12 @@ plugins = {
   'lockable-resources'    => '2.4',
   'workflow-aggregator'    => '2.6',
   'aws-credentials'    => '1.26',
-  'pipeline-aws'    => '1.36'
+  'pipeline-aws'    => '1.36',
+  'jacoco'    => '3.0.4',
+  'antisamy-markup-formatter'    => '1.5',
+  'analysis-core'    => '1.95',
+  'findbugs'    => '5.0.0',
+  'pmd'    => '4.0.0'
 }
 
 plugins.each_with_index do |(plugin_name, plugin_version), index|
