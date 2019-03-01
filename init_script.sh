@@ -35,15 +35,15 @@ echo 'Uploading cfn templates to s3 bucket'
 aws s3 sync ./infrastructure s3://${bucket_name}/${env_name}
 
 echo 'Creating infrastructure'
-# aws cloudformation deploy --template-file ./infrastructure/master.yml \
-#   --stack-name ${env_name}  --no-fail-on-empty-changeset \
-#   --capabilities CAPABILITY_NAMED_IAM \
-#   --parameter-overrides \
-#       VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/vpc.yml) \
-#       SgTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/security-groups.yml) \
-#       LbTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/load-balancers.yml) \
-#       EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
-#       LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
+aws cloudformation deploy --template-file ./infrastructure/master.yml \
+  --stack-name ${env_name}  --no-fail-on-empty-changeset \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides \
+      VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/vpc.yml) \
+      SgTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/security-groups.yml) \
+      LbTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/load-balancers.yml) \
+      EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
+      LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
 
 export vpc=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
 export public_subnet_1=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnet1") | .OutputValue' -r)
