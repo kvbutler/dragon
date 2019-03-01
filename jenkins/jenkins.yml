@@ -118,7 +118,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: !Ref JenkinsPort
           ToPort: !Ref JenkinsPort
-          SourceSecurityGroupId: Ref: "JenkinsLBSecurityGroup"
+          SourceSecurityGroupId: !Ref: "JenkinsLBSecurityGroup"
         - IpProtocol: tcp
           FromPort: '22'
           ToPort: '22'
