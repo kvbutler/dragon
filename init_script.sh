@@ -6,10 +6,10 @@ export cfn_template_bucket_stack_name='cfn-template-bucket'
 export ssh_key_pair_name='mdas-ssh-key'
 export jenkins_user='jenkins'
 export jenkins_instance_type="t2.large"
-
+## need to export jenkins_password before running this script
 
 #aws secretsmanager create-secret --name JenkinsPassword --description "Jenkins admin password" --secret-string "add your password"
-
+#need to expo
 #this requires aws cli v1.16.11 - run pip install awscli==1.16.11
 
 echo 'Generating EC2 ssh key pair'
@@ -21,6 +21,9 @@ if [[ "$key_pair" == "null" ]]; then
 else
   echo "SSH key pair, ${ssh_key_pair_name}, already exists"
 fi
+
+echo "Validate cfn templates"
+./tests/validate-templates.sh
 
 echo 'Creating s3 bucket for cfn templates'
 aws cloudformation deploy --template-file ./infrastructure/cfn-template-bucket.yml \
@@ -34,15 +37,15 @@ echo 'Uploading cfn templates to s3 bucket'
 aws s3 sync ./infrastructure s3://${bucket_name}/${env_name}
 
 echo 'Creating infrastructure'
-aws cloudformation deploy --template-file ./infrastructure/master.yml \
-  --stack-name ${env_name} --region ${region} --no-fail-on-empty-changeset \
-  --capabilities CAPABILITY_NAMED_IAM \
-  --parameter-overrides \
-      VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/vpc.yml) \
-      SgTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/security-groups.yml) \
-      LbTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/load-balancers.yml) \
-      EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
-      LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
+# aws cloudformation deploy --template-file ./infrastructure/master.yml \
+#   --stack-name ${env_name} --region ${region} --no-fail-on-empty-changeset \
+#   --capabilities CAPABILITY_NAMED_IAM \
+#   --parameter-overrides \
+#       VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/vpc.yml) \
+#       SgTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/security-groups.yml) \
+#       LbTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/load-balancers.yml) \
+#       EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
+#       LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
 
 export vpc=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
 export public_subnet_1=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnet1") | .OutputValue' -r)
@@ -60,3 +63,4 @@ aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
       InstanceSubnet="${public_subnet_1}" \
       InstanceType="${jenkins_instance_type}" \
       JenkinsUser="${jenkins_user}"
+      JenkinsPassword="${jenkins_password}"

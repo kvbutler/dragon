@@ -45,7 +45,7 @@ Parameters:
   JenkinsPassword:
     Description: Jenkins password
     Type: String
-    Default: /aws/reference/secretsmanager/JenkinsPassword
+#    Default: '{{resolve:secretsmanager:JenkinsPassword}}'
     NoEcho: true
   JenkinsCookbookRepo:
     Description: git repo containing jenkins config cookbooks
@@ -93,7 +93,7 @@ Resources:
       HealthyThresholdCount: 2
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
-        Value: '20'
+        Value: '25'
       Targets:
       - Id: !Ref Jenkins
         Port: 8080

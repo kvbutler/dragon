@@ -12,7 +12,7 @@ plugins = {
   'script-security'    => '1.53',
   'matrix-project'    => '1.13',
   'javadoc'    => '1.4',
-  'email-ext'    => '2.63',
+  'email-ext'    => '2.64',
   'workflow-scm-step'    => '2.7',
   'ssh-credentials'    => '1.14',
   'jsch'    => '0.1.55',
@@ -73,7 +73,7 @@ plugins = {
   'momentjs'    => '1.1.1',
   'pipeline-stage-view'    => '2.10',
   'pipeline-build-step'    => '2.7',
-  'credentials-binding'    => '1.17',
+  'credentials-binding'    => '1.18',
   'pipeline-model-api'    => '1.3.4.1',
   'pipeline-model-extensions'    => '1.3.4.1',
   'branch-api'    => '2.1.2',
@@ -86,7 +86,9 @@ plugins = {
   'pipeline-model-declarative-agent'    => '1.1.1',
   'pipeline-model-definition'    => '1.3.4.1',
   'lockable-resources'    => '2.4',
-  'workflow-aggregator'    => '2.6'
+  'workflow-aggregator'    => '2.6',
+  'aws-credentials'    => '1.26',
+  'pipeline-aws'    => '1.36'
 }
 
 plugins.each_with_index do |(plugin_name, plugin_version), index|
