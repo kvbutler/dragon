@@ -167,6 +167,7 @@ Resources:
               - "ssm:*"
               - "secretsmanager:*"
               - "ecr:*"
+              - "ecs:*"
             Resource: "*"
       Roles:
         -

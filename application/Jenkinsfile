@@ -88,29 +88,37 @@ pipeline {
 
 		stage('Push Image') {
 			steps {
-				sh "aws configure set default.region ${region}"
-				sh "aws cloudformation deploy --template-file ./ecr-repository.yml --stack-name ecr-repository-${ecr_repo} --parameter-overrides RepositoryName=${ecr_repo}"
-				sh "\$(aws ecr get-login --no-include-email)"
-				sh "docker tag ${imageName}:${env.BUILD_ID} ${fqImageName}:${env.BUILD_ID}"
-				sh "docker tag ${imageName}:${env.BUILD_ID} ${fqImageName}:latest"
-				sh "docker push ${fqImageName}:${env.BUILD_ID}"
-				sh "docker push ${fqImageName}:latest"
+  			dir(appBuildDir) {
+
+					sh "aws configure set default.region ${region}"
+					sh "aws cloudformation deploy --template-file ./ecr-repository.yml --stack-name ecr-repository-${ecr_repo} --no-fail-on-empty-changeset --parameter-overrides RepositoryName=${ecr_repo}"
+					sh "\$(aws ecr get-login --no-include-email)"
+					sh "docker tag ${imageName}:${env.BUILD_ID} ${fqImageName}:${env.BUILD_ID}"
+					sh "docker tag ${imageName}:${env.BUILD_ID} ${fqImageName}:latest"
+					sh "docker push ${fqImageName}:${env.BUILD_ID}"
+					sh "docker push ${fqImageName}:latest"
+				}
 			}
 		}
 
 		stage('Deploy Service') {
 			steps {
+			dir(appBuildDir) {
+
 				//sh "aws ecs update-service --cluster ${cluster} --service ${serviceName} --force-new-deployment"
 				sh """
 				  export vpc=\$(aws cloudformation describe-stacks --stack-name ${cluster} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
 
-				  aws cloudformation deploy --template-file ./ecr-service.yml --stack-name dragon-service \
+				  aws cloudformation deploy --template-file ./service.yml --stack-name dragon-service \
+					   --no-fail-on-empty-changeset \
+						 --capabilities CAPABILITY_NAMED_IAM \
 					   --parameter-overrides \
 						      VPC=\${vpc} \
 						      Cluster=${cluster} \
 						      Listener='arn:aws:elasticloadbalancing:us-east-1:338758346111:listener/app/mdas-prod/fda2922814043d90/3319ac6bed4378e8' \
 						      ecrImage=${fqImageName}:${env.BUILD_ID}
 				"""
+				}
 			}
 		}
 

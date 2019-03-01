@@ -11,3 +11,14 @@ pipelineJob("testpipeline1") {
         }
     }
 }
+
+pipelineJob('webapp') {
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/ICFI/dragon.git')
+            }
+            scriptPath("application/Jenkinsfile")
+        }
+    }
+}
