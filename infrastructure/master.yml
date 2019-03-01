@@ -106,6 +106,10 @@ Outputs:
   PrivateSubnet2:
     Description: A reference to the private subnet in the 2nd Availability Zone
     Value: !GetAtt VPC.Outputs.PrivateSubnet2
+
+  EcsListenerArn:
+    Description: ECS ALB listener ARN
+    Value: !GetAtt ALB.Outputs.Listener
   # ProductServiceUrl:
   #   Description: The URL endpoint for the product service
   #   Value: !Join ["/", [!GetAtt ALB.Outputs.LoadBalancerUrl, "products"]]

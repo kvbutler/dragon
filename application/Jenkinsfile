@@ -108,14 +108,14 @@ pipeline {
 				//sh "aws ecs update-service --cluster ${cluster} --service ${serviceName} --force-new-deployment"
 				sh """
 				  export vpc=\$(aws cloudformation describe-stacks --stack-name ${cluster} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
-
+					export ecsListener=  \$(aws cloudformation describe-stacks --stack-name ${cluster} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "EcsListenerArn") | .OutputValue' -r)
 				  aws cloudformation deploy --template-file ./service.yml --stack-name dragon-service \
 					   --no-fail-on-empty-changeset \
 						 --capabilities CAPABILITY_NAMED_IAM \
 					   --parameter-overrides \
 						      VPC=\${vpc} \
 						      Cluster=${cluster} \
-						      Listener='arn:aws:elasticloadbalancing:us-east-1:338758346111:listener/app/mdas-prod/fda2922814043d90/3319ac6bed4378e8' \
+						      Listener=\${ecsListener} \
 						      ecrImage=${fqImageName}:${env.BUILD_ID}
 				"""
 				}
