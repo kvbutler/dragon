@@ -1,17 +1,5 @@
 import javaposse.jobdsl.dsl.*
 
-pipelineJob("testpipeline1") {
-    logRotator {
-        numToKeep(20)
-    }
-    definition {
-        cps {
-            script(readFileFromWorkspace("jenkins/jobs/scripts/testpipeline1.groovy"))
-            sandbox()
-        }
-    }
-}
-
 pipelineJob('webapp') {
     definition {
         cpsScm {
