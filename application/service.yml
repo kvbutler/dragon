@@ -37,6 +37,7 @@ Resources:
       Role: !Ref ServiceRole
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
+      HealthCheckGracePeriodSeconds: 180
       LoadBalancers:
         - ContainerName: "dragon-service"
           ContainerPort: 8080
