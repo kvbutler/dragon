@@ -108,7 +108,7 @@ pipeline {
 				//sh "aws ecs update-service --cluster ${cluster} --service ${serviceName} --force-new-deployment"
 				sh """
 				  export vpc=\$(aws cloudformation describe-stacks --stack-name ${cluster} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
-					export ecsListener=  \$(aws cloudformation describe-stacks --stack-name ${cluster} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "EcsListenerArn") | .OutputValue' -r)
+					export ecsListener=\$(aws cloudformation describe-stacks --stack-name ${cluster} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "EcsListenerArn") | .OutputValue' -r)
 				  aws cloudformation deploy --template-file ./service.yml --stack-name dragon-service \
 					   --no-fail-on-empty-changeset \
 						 --capabilities CAPABILITY_NAMED_IAM \
