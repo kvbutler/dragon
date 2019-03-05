@@ -22,7 +22,7 @@ Parameters:
   Path:
     Description: The path to register with the Application Load Balancer
     Type: String
-    Default: /
+    Default: "/*"
 
   ecrImage:
     Description: ECR image to use for container.
