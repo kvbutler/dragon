@@ -26,6 +26,10 @@ Parameters:
   LifecycleHookTemplateUrl:
     Type: String
     Description: Signed url for lifecyclehook template stored in s3 bucket
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
 Resources:
   VPC:
     Type: AWS::CloudFormation::Stack
@@ -68,6 +72,7 @@ Resources:
         VPC: !GetAtt VPC.Outputs.VPC
         SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
         Subnets: !GetAtt VPC.Outputs.PrivateSubnets
+        KeyName: !Ref KeyName
 
   LifecycleHook:
     Type: AWS::CloudFormation::Stack

@@ -43,6 +43,7 @@ aws cloudformation deploy --template-file ./infrastructure/master.yml \
       SgTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/security-groups.yml) \
       LbTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/load-balancers.yml) \
       EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
+      KeyName="${ssh_key_pair_name}" \
       LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
 
 export vpc=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
