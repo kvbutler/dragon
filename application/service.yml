@@ -51,7 +51,7 @@ Resources:
         - Name: dragon-service
           Essential: true
           Image: !Ref ecrImage
-          Memory: 256
+          #Memory: 256
           PortMappings:
             - ContainerPort: 8080
           LogConfiguration:
