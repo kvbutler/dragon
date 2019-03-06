@@ -19,7 +19,7 @@ pipeline {
 
 		// ECS / ECR info
 		// Cluster name is used to label resources to differentiate between deployments
-		cluster = "mdas-prod"
+		cluster = "dragon"
 		// Query the EC2 metadata service and return the current AWS region in which we're running
 		region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
 		// Name of the image including the ECR repo

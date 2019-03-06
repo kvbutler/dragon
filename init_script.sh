@@ -1,9 +1,9 @@
 #!/bin/bash -ex
 
 export AWS_DEFAULT_REGION='us-east-1'
-export env_name='mdas-prod'
+export env_name='dragon'
 export cfn_template_bucket_stack_name='cfn-template-bucket'
-export ssh_key_pair_name='mdas-ssh-key'
+export ssh_key_pair_name='dragon-ssh-key'
 export jenkins_user='jenkins'
 export jenkins_instance_type="t2.large"
 
