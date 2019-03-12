@@ -229,6 +229,7 @@ Resources:
               tmux: []
               git: []
               jq: []
+              python-pip: []
           # sources:
           #     /home/ec2-user/tarball: 'tarball'
           files:
@@ -242,8 +243,12 @@ Resources:
                 service docker start
                 usermod -a -G docker ec2-user
                 usermod -a -G docker jenkins
-                serivce jenkins restart
+                sudo serivce jenkins restart
                 sudo systemctl enable docker
+            /tmp/install_python_packages.sh:
+              content: !Sub |
+                sudo pip install pandas
+                sudo pip install sagemaker
           commands:
             01_download_chef:
               command: "wget -O /tmp/chefdk.rpm https://packages.chef.io/files/stable/chefdk/3.7.23/el/7/chefdk-3.7.23-1.el7.x86_64.rpm"
@@ -255,6 +260,8 @@ Resources:
               command: "sudo bash /opt/jenkins-cfn-chef/jenkins/install-jenkins.sh"
             05_install_docker:
               command: "sudo bash /tmp/install_docker.sh"
+            06_install_python_packages:
+              command: "sudo bash /tmp/install_python_packages.sh"
     Properties:
       ImageId: !Ref 'ImageId'
       InstanceType: !Ref 'InstanceType'
@@ -296,6 +303,7 @@ Resources:
             - '
 
               '
+            - 'service jenkins restart'
       Tags:
         - Key: Name
           Value: !Ref 'AWS::StackName'
