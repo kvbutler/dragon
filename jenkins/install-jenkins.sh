@@ -27,5 +27,3 @@ ATTRS
 
 berks vendor vendor-cookbooks -b cookbooks/jenkins-config/Berksfile
 chef-solo -j attributes.json -c config.rb --logfile ./chef_solo_run.log
-
-sudo service jenkins restart
