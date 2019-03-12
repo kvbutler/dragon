@@ -168,6 +168,8 @@ Resources:
               - "secretsmanager:*"
               - "ecr:*"
               - "ecs:*"
+              - "sts:GetFederationToken"
+              - "sts:GetCallerIdentity"              
             Resource: "*"
       Roles:
         -
@@ -229,7 +231,7 @@ Resources:
               tmux: []
               git: []
               jq: []
-              python-pip: []
+              python2-pip: []
           # sources:
           #     /home/ec2-user/tarball: 'tarball'
           files:
