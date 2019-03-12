@@ -133,6 +133,7 @@ Resources:
             Principal:
               Service:
                 - "ec2.amazonaws.com"
+                - "sagemaker.amazonaws.com"
             Action:
               - "sts:AssumeRole"
       Path: "/"
@@ -169,7 +170,7 @@ Resources:
               - "ecr:*"
               - "ecs:*"
               - "sts:GetFederationToken"
-              - "sts:GetCallerIdentity"              
+              - "sts:GetCallerIdentity"
             Resource: "*"
       Roles:
         -
