@@ -34,7 +34,7 @@ pipelineJob('sagemaker-train-model') {
             scm {
                 git('https://github.com/seanjoo/sagemaker-flow')
             }
-            scriptPath("jobs/traing_model")
+            scriptPath("jobs/train_model")
         }
     }
 }
