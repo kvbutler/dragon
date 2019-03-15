@@ -10,3 +10,14 @@ pipelineJob('webapp') {
         }
     }
 }
+
+pipelineJob('sagemaker-algorithm-build') {
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/seanjoo/sagemaker-flow')
+            }
+            scriptPath("jobs/build_algorithm_image")
+        }
+    }
+}
