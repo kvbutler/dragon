@@ -38,3 +38,54 @@ pipelineJob('sagemaker-train-model') {
         }
     }
 }
+
+pipelineJob('sagemaker-retrain-model') {
+
+    parameters {
+      stringParam('imageName', '', 'Algorithm image name')
+      stringParam('imageVersion', 'latest', 'Algorithm image version (tag)')
+      stringParam('modelUri', '', 'model uri to retrain')
+    }
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/seanjoo/sagemaker-flow')
+            }
+            scriptPath("jobs/train_model")
+        }
+    }
+}
+
+pipelineJob('sagemaker-promote-model-QA') {
+
+    parameters {
+      stringParam('imageName', '', 'Algorithm image name')
+      stringParam('imageVersion', 'latest', 'Algorithm image version (tag)')
+      stringParam('modelUri', '', 'model uri to retrain')
+    }
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/seanjoo/sagemaker-flow')
+            }
+            scriptPath("jobs/train_model")
+        }
+    }
+}
+
+pipelineJob('sagemaker-promote-model-Prod') {
+
+    parameters {
+      stringParam('imageName', '', 'Algorithm image name')
+      stringParam('imageVersion', 'latest', 'Algorithm image version (tag)')
+      stringParam('modelUri', '', 'model uri to retrain')
+    }
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/seanjoo/sagemaker-flow')
+            }
+            scriptPath("jobs/train_model")
+        }
+    }
+}
