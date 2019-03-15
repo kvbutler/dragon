@@ -21,3 +21,20 @@ pipelineJob('sagemaker-algorithm-build') {
         }
     }
 }
+
+pipelineJob('sagemaker-train-model') {
+
+    parameters {
+      stringParam('imageName', '', 'Algorithm image name')
+      stringParam('imageVersion', 'latest', 'Algorithm image version (tag)')
+
+    }
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/seanjoo/sagemaker-flow')
+            }
+            scriptPath("jobs/traing_model")
+        }
+    }
+}
