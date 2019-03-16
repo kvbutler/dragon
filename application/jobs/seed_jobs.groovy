@@ -1,12 +1,12 @@
 import javaposse.jobdsl.dsl.*
 
-pipelineJob('webapp') {
+pipelineJob('web-application-pipeline') {
     definition {
         cpsScm {
             scm {
                 git('https://github.com/ICFI/dragon.git')
             }
-            scriptPath("application/Jenkinsfile")
+            scriptPath("application/jobs/Jenkinsfile")
         }
     }
 }
