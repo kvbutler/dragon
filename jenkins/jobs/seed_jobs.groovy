@@ -68,7 +68,7 @@ pipelineJob('sagemaker-promote-model-QA') {
             scm {
                 git('https://github.com/seanjoo/sagemaker-flow')
             }
-            scriptPath("jobs/train_model")
+            scriptPath("jobs/deploy_model")
         }
     }
 }
@@ -85,7 +85,7 @@ pipelineJob('sagemaker-promote-model-Prod') {
             scm {
                 git('https://github.com/seanjoo/sagemaker-flow')
             }
-            scriptPath("jobs/train_model")
+            scriptPath("jobs/deploy_model")
         }
     }
 }
