@@ -1,4 +1,4 @@
-def registrationConfigFile = readFileFromWorkspace('config/seed-repo-config.groovy')
+def registrationConfigFile = readFileFromWorkspace('jenkins/jobs/config/seed-repo-config.groovy')
 
 def registrationConfig = new ConfigSlurper().parse(registrationConfigFile)
 
