@@ -77,39 +77,3 @@ response = ssm_client.put_parameter(
     Description='training job name for the jenkins build id',
     Value=tree.latest_training_job.name,
     Type='String')
-
-
-
-
-
-
-
-# >>> my_estimator.fit(wait=False)
-# >>> training_job_name = my_estimator.latest_training_job.name
-# Later on:
-# >>> attached_estimator = Estimator.attach(training_job_name)
-# >>> attached_estimator.deploy()
-
-### tag the model
-### BaseModel:
-###
-
-# predictor = tree.deploy(1, 'ml.m4.xlarge', serializer=csv_serializer)
-#
-# client = boto3.client('sagemaker', region_name='us-east-1')
-#
-# endpoints = client.list_endpoints(NameContains='mytest-endpoint2')
-#
-# update_endpoints = len(endpoints['Endpoints'])
-#
-# print (update_endpoints)
-#
-# predictor = tree.deploy(1, 'ml.m4.xlarge', serializer=csv_serializer, update_endpoint=update_endpoints,
-#                         endpoint_name='mytest-endpoint2')
-#
-# print ('Wait for endpoint in service')
-# waiter = client.get_waiter('endpoint_in_service')
-# waiter.wait(EndpointName='mytest-endpoint2')
-# print ('Endpoint is in service')
-#
-# print(tree.model_data)
