@@ -53,7 +53,8 @@ def train():
         raw_data = [ pd.read_csv(file, engine='python') for file in input_files ]
         train_data = pd.concat(raw_data)
 
-        X = train_data.drop(['Survived'], axis = 1)
+        X = train_data.drop(['id','Survived'], axis = 1)
+
         y = train_data["Survived"]
 
         from sklearn.model_selection import train_test_split
