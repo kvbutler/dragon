@@ -15,6 +15,9 @@ parser.add_argument('--version', default="latest", help='version/tag to pull fro
 parser.add_argument('--workspace', default=os.getcwd())
 parser.add_argument('--modeluri', default="")
 parser.add_argument('--buildid', default="")
+parser.add_argument('--trainInstanceCount', default="1")
+parser.add_argument('--trainInstanceType', default="ml.m5.xlarge")
+
 
 args=parser.parse_args()
 
@@ -33,6 +36,8 @@ image = '{}.dkr.ecr.{}.amazonaws.com/{}:{}'.format(account, region, args.image, 
 param_path = '{}/input/config/hyperparameters.json'.format(args.workspace)
 model_uri = args.modeluri
 build_id = args.buildid
+trainInstanceCount=args.trainInstanceCount
+trainInstanceType=args.trainInstanceType
 
 
 ## hyperparameter
@@ -45,8 +50,6 @@ build_id = args.buildid
 #hyperparameters = dict(batch_size=32, data_augmentation=True, learning_rate=.0001,
 #                       width_shift_range=.1, height_shift_range=.1, epochs=1)
 
-
-
 with open(param_path, 'r') as tc:
     hyperparameters = json.load(tc)
 
@@ -58,7 +61,7 @@ with open(param_path, 'r') as tc:
 tags = [{"Key": "BuildId", "Value": build_id} ]
 
 tree = sage.estimator.Estimator(image,
-                       role, 1, 'ml.c4.2xlarge',
+                       role, trainInstanceCount, trainInstanceType,
                        output_path="s3://{}/training/jobs/".format(sess.default_bucket()),
                        sagemaker_session=sess, hyperparameters=hyperparameters,
                        model_uri=model_uri, tags=tags)

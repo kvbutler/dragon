@@ -7,6 +7,9 @@ pipeline {
 	  // Query the EC2 metadata service and return the current AWS region in which we're running
 	  region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
 
+		trainInstanceCount = "${params.trainInstanceCount}"
+		trainInstanceType = "${params.trainInstanceType}"
+
 		// SCM
 		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
 		sagemaker_workspace = "${WORKSPACE}/sagemaker"
@@ -28,7 +31,11 @@ pipeline {
 		  steps {
 			sh """
 				export AWS_DEFAULT_REGION=${region}
-				${sagemaker_workspace}/jobs/scripts/deploy_model.py --workspace=${sagemaker_workspace} --envname=${envName}
+				${sagemaker_workspace}/jobs/scripts/deploy_model.py \
+						--workspace=${sagemaker_workspace} \
+						--envname=${envName} \
+						--trainInstanceCount=${trainInstanceCount} \
+						--trainInstanceType=${trainInstanceType}
 			"""
 
 			}

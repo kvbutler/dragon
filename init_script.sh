@@ -3,6 +3,7 @@
 export AWS_DEFAULT_REGION='us-east-1'
 export master_stack_name='dragon'
 export cfn_template_bucket_stack_name='cfn-template-bucket'
+export sagemaker_bucket_stack_name='sagemaker-bucket'
 export ssh_key_pair_name='dragon-ssh-key'
 export jenkins_user='jenkins'
 export jenkins_instance_type="t2.large"
@@ -61,10 +62,11 @@ aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
       JenkinsUser="${jenkins_user}" \
       JenkinsPassword="$(aws secretsmanager get-secret-value --secret-id JenkinsPassword | jq .SecretString -r)"
 
-  #create sagemaker bucket + prefixes
-  #add a job to add prefix for each jupyter notebook
-  #training
-  #  data
-  #
-  #update deployment instance type - in Jenkins
-  #update jenkins job - jupyter noteboock deploy -
+echo 'Creating s3 bucket for cfn templates'
+aws cloudformation deploy --template-file ./infrastructure/sagemaker-bucket.yml \
+  --stack-name ${sagemaker_bucket_stack_name}  --no-fail-on-empty-changeset
+
+echo 'Creating training folder'
+account=$(aws sts get-caller-identity --query Account --output text)
+aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key training/data
+aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key training/jobs

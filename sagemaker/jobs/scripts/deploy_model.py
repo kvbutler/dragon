@@ -14,10 +14,15 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--workspace', default=os.getcwd())
 parser.add_argument('--buildid', default="")
 parser.add_argument('--envname', default="dev")
+parser.add_argument('--trainInstanceCount', default="1")
+parser.add_argument('--trainInstanceType', default="ml.m5.xlarge")
 
 args=parser.parse_args()
 build_id = args.buildid
 env_name = args.envname
+trainInstanceCount=args.trainInstanceCount
+trainInstanceType=args.trainInstanceType
+
 endpoint_name = "{}-sm-endpoint".format(env_name)
 
 # S3 prefix
@@ -35,7 +40,7 @@ if env_name == 'dev':
     training_job_name = response['Parameter']['Value']
     attached_estimator = sage.estimator.Estimator.attach(training_job_name)
 
-    predictor = attached_estimator.deploy(1, 'ml.m4.xlarge',
+    predictor = attached_estimator.deploy(trainInstanceCount, trainInstanceType,
                             serializer=csv_serializer,
                             update_endpoint=update_endpoints,
                             endpoint_name=endpoint_name)
