@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 export AWS_DEFAULT_REGION='us-east-1'
-export env_name='dragon'
+export master_stack_name='dragon'
 export cfn_template_bucket_stack_name='cfn-template-bucket'
 export ssh_key_pair_name='dragon-ssh-key'
 export jenkins_user='jenkins'
@@ -32,28 +32,25 @@ export bucket_name=$(aws cloudformation describe-stacks --stack-name cfn-templat
 #aws s3api wait bucket-exists --bucket ${bucket_name}
 
 echo 'Uploading cfn templates to s3 bucket'
-aws s3 sync ./infrastructure s3://${bucket_name}/${env_name}
+aws s3 sync ./infrastructure s3://${bucket_name}/${master_stack_name}
 
 echo 'Creating infrastructure'
 aws cloudformation deploy --template-file ./infrastructure/master.yml \
-  --stack-name ${env_name}  --no-fail-on-empty-changeset \
+  --stack-name ${master_stack_name}  --no-fail-on-empty-changeset \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides \
-      VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/vpc.yml) \
-      SgTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/security-groups.yml) \
-      LbTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/load-balancers.yml) \
-      EcsTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/ecs-cluster.yml) \
-      KeyName="${ssh_key_pair_name}" \
-      LifecycleHookTemplateUrl=$(aws s3 presign s3://${bucket_name}/${env_name}/lifecyclehook.yml)
+      VpcTemplateUrl=$(aws s3 presign s3://${bucket_name}/${master_stack_name}/vpc.yml) \
+      MasterStackName="${master_stack_name}" \
+      KeyName="${ssh_key_pair_name}"
 
-export vpc=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
-export public_subnet_1=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnet1") | .OutputValue' -r)
-export private_subnet_1=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PrivateSubnet1") | .OutputValue' -r)
-export public_subnets=$(aws cloudformation describe-stacks --stack-name ${env_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnets") | .OutputValue' -r)
+export vpc=$(aws cloudformation describe-stacks --stack-name ${master_stack_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "VPC") | .OutputValue' -r)
+export public_subnet_1=$(aws cloudformation describe-stacks --stack-name ${master_stack_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnet1") | .OutputValue' -r)
+export private_subnet_1=$(aws cloudformation describe-stacks --stack-name ${master_stack_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PrivateSubnet1") | .OutputValue' -r)
+export public_subnets=$(aws cloudformation describe-stacks --stack-name ${master_stack_name} | jq '.Stacks[0].Outputs[] | select(.OutputKey == "PublicSubnets") | .OutputValue' -r)
 
 echo 'Deploying Jenkins'
 aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
-  --stack-name ${env_name}-jenkins  --no-fail-on-empty-changeset \
+  --stack-name ${master_stack_name}-jenkins  --no-fail-on-empty-changeset \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides \
       KeyName="${ssh_key_pair_name}" \
