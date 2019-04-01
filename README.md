@@ -15,7 +15,12 @@
     source init_script.sh
   ```
 
+     generate and add the key. to git hub repo.
+
   c. deploy jupyter notebooks - add ssh key
   aws secretsmanager create-secret --name GitDeployPubKey --description "GitDeployPubKey" --secret-string file://./deploy_key.pub --region us-east-1
 
     aws secretsmanager create-secret --name GitDeployPrivKey --description "GitDeployPrivKey" --secret-string file://./deploy_key --region us-east-1
+
+
+s3 bucket + kms + subnet for jupyter notebook iam role
