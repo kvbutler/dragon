@@ -59,7 +59,7 @@ tags = [{"Key": "BuildId", "Value": build_id} ]
 
 tree = sage.estimator.Estimator(image,
                        role, 1, 'ml.c4.2xlarge',
-                       output_path="s3://{}/training/".format(sess.default_bucket()),
+                       output_path="s3://{}/training/jobs/".format(sess.default_bucket()),
                        sagemaker_session=sess, hyperparameters=hyperparameters,
                        model_uri=model_uri, tags=tags)
 tree.fit(training_input)

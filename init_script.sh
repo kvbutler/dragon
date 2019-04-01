@@ -60,3 +60,11 @@ aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
       InstanceType="${jenkins_instance_type}" \
       JenkinsUser="${jenkins_user}" \
       JenkinsPassword="$(aws secretsmanager get-secret-value --secret-id JenkinsPassword | jq .SecretString -r)"
+
+  #create sagemaker bucket + prefixes
+  #add a job to add prefix for each jupyter notebook
+  #training
+  #  data
+  #
+  #update deployment instance type - in Jenkins
+  #update jenkins job - jupyter noteboock deploy -

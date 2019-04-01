@@ -4,6 +4,10 @@ Parameters:
     Description: github clone url
     Type: String
     Default: "git@github.com:ICFI/dragon.git"
+  VolumeSize:
+    Description: volume size in GB
+    Type: Integer
+    Default: 200
   NotebookInstanceType:
     Description: Notebook instance type
     Type: String
@@ -56,6 +60,7 @@ Resources:
       NotebookInstanceName: !Ref 'AWS::StackName'
       InstanceType: !Ref NotebookInstanceType
       RoleArn: !GetAtt ExecutionRole.Arn
+      VolumeSizeInGB: !Ref VolumeSize
       LifecycleConfigName: !GetAtt BasicNotebookInstanceLifecycleConfig.NotebookInstanceLifecycleConfigName
   BasicNotebookInstanceLifecycleConfig:
     Type: "AWS::SageMaker::NotebookInstanceLifecycleConfig"
