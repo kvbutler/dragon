@@ -12,7 +12,7 @@ Parameters:
     Type: String
   VolumeSize:
     Description: volume size in GB
-    Type: Integer
+    Type: Number
     Default: 200
   NotebookInstanceType:
     Description: Notebook instance type
