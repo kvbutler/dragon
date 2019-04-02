@@ -2,13 +2,21 @@ pipeline {
 
 	agent any
 
+	if (params.email == null || params.userName == null) {
+	    error("Build failed because one or more required fields (userName and email) are missing.")
+	}
+
 	environment {
 
 	  // Query the EC2 metadata service and return the current AWS region in which we're running
 	  region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
 
-		instanceCount = "${params.initialInstanceCount}"
 		instanceType = "${params.instanceType}"
+	  email = "${params.email}"
+		userName = "${params.userName}"
+		//repo = "${params.repo}"
+		repo = "git@github.com:seanjoo/sagemaker-flow.git"
+
 
 		// SCM
 		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
@@ -27,15 +35,17 @@ pipeline {
 					git url: "$GIT_URL", branch: "$GIT_BRANCH".tokenize("/")[1]
 			}
 		}
-		stage('Deploy Model To Dev') {
+		stage('Deploy Jupyter Notebook') {
 		  steps {
 			sh """
-				export AWS_DEFAULT_REGION=${region}
-				${sagemaker_workspace}/jobs/scripts/deploy_model.py \
-						--workspace=${sagemaker_workspace} \
-						--envname=${envName} \
-						--initialInstanceCount=${initialInstanceCount} \
-						--instanceType=${instanceType}
+				echo 'Creating/updating Jupyter notebook'
+				aws cloudformation deploy --template-file ./sagemaker/jupyter.yml \
+				  --stack-name ${userName}-notebook  --no-fail-on-empty-changeset \
+				  --capabilities CAPABILITY_NAMED_IAM \
+				  --parameter-overrides \
+				      UserName=\"${userName}\" \
+				      Email=\"${email}\"
+							SageMakerRepo=\"${repo}\"
 			"""
 
 			}

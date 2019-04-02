@@ -4,6 +4,12 @@ Parameters:
     Description: github clone url
     Type: String
     Default: "git@github.com:ICFI/dragon.git"
+  UserName:
+    Description: Name of the user
+    Type: String
+  Email:
+    Description: Email address for the user
+    Type: String
   VolumeSize:
     Description: volume size in GB
     Type: Integer

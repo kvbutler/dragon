@@ -63,8 +63,8 @@ pipeline {
 					    	--workspace=${sagemaker_workspace} \
 						  	--buildid=${buildId} \
 						  	--envname=dev \
-						  	--trainInstanceCount=${trainInstanceCount} \
-						  	--trainInstanceType=${trainInstanceType}
+						  	--initialInstanceCount=${trainInstanceCount} \
+						  	--instanceType=${trainInstanceType}
 				"""
 
 			}
