@@ -119,6 +119,7 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
         - "arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess"
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
       Policies:
         -
           PolicyName: "sm-execution-inline-policy"
