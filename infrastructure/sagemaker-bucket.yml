@@ -1,15 +1,18 @@
 Description: >
-  This tempalte deploys a s3 bucket used for storing Cloudformation templates
+  This tempalte deploys a s3 bucket used for sage maker
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub 'cloudformation-${AWS::AccountId}'
+      BucketName: !Sub 'sagemaker-${AWS::Region}-${AWS::AccountId}'
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+
 Outputs:
-  CfnTemplateBucketName:
+  SagemakerBucketName:
     Description: Name of the created bucket
     Value: !Ref S3Bucket

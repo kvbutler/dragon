@@ -13,6 +13,9 @@ pipeline {
 		sagemaker_workspace = "${WORKSPACE}/sagemaker"
 		imageName = "${params.imageName}"
 		imageVersion = "${params.imageVersion}"
+		trainInstanceCount = "${params.trainInstanceCount}"
+		trainInstanceType = "${params.trainInstanceType}"
+
 		//timestamp = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone('GMT-4'))
 		buildId = "${env.JOB_BASE_NAME}-build-${env.BUILD_ID}"//-${timestamp}"
 	}
@@ -32,7 +35,14 @@ pipeline {
 			  }
 				sh """
 				  export AWS_DEFAULT_REGION=${region}
-				  ${sagemaker_workspace}/jobs/scripts/train_model.py --image=${imageName} --version=${imageVersion} --workspace=${sagemaker_workspace} --modeluri=${modelUri} --buildid=${buildId}
+				  ${sagemaker_workspace}/jobs/scripts/train_model.py \
+					        --image=${imageName} \
+									--version=${imageVersion} \
+					        --workspace=${sagemaker_workspace} \
+									--modeluri=${modelUri} \
+									--buildid=${buildId} \
+									--trainInstanceCount=${trainInstanceCount} \
+									--trainInstanceType=${trainInstanceType}
 				"""
 
 			}
@@ -49,7 +59,12 @@ pipeline {
 		  steps {
 				sh """
 				  export AWS_DEFAULT_REGION=${region}
-					${sagemaker_workspace}/jobs/scripts/deploy_model.py --workspace=${sagemaker_workspace} --buildid=${buildId} --envname=dev
+					${sagemaker_workspace}/jobs/scripts/deploy_model.py \
+					    	--workspace=${sagemaker_workspace} \
+						  	--buildid=${buildId} \
+						  	--envname=dev \
+						  	--initialInstanceCount=${trainInstanceCount} \
+						  	--instanceType=${trainInstanceType}
 				"""
 
 			}
