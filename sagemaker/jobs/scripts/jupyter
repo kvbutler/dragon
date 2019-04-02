@@ -44,10 +44,12 @@ pipeline {
 				aws cloudformation deploy --template-file ./sagemaker/jupyter.yml \
 				  --stack-name ${userName}-notebook  --no-fail-on-empty-changeset \
 				  --capabilities CAPABILITY_NAMED_IAM \
+					--region us-east-1 \
 				  --parameter-overrides \
 				      UserName=\"${userName}\" \
-				      Email=\"${email}\"
+				      Email=\"${email}\" \
 							SageMakerRepo=\"${repo}\"
+
 			"""
 
 			}
