@@ -2,10 +2,6 @@ pipeline {
 
 	agent any
 
-	if (params.email == null || params.userName == null) {
-	    error("Build failed because one or more required fields (userName and email) are missing.")
-	}
-
 	environment {
 
 	  // Query the EC2 metadata service and return the current AWS region in which we're running
@@ -30,9 +26,15 @@ pipeline {
 		  steps {
 				script {
 					envName = params.envName?params.envName:""
-					}
-					// $GIT_BRANCH looks like `origin/branch-name` so parse it.
-					git url: "$GIT_URL", branch: "$GIT_BRANCH".tokenize("/")[1]
+
+
+						if (params.email == null || params.userName == null) {
+						    error("Build failed because one or more required fields (userName and email) are missing.")
+						}
+
+				}
+				// $GIT_BRANCH looks like `origin/branch-name` so parse it.
+				git url: "$GIT_URL", branch: "$GIT_BRANCH".tokenize("/")[1]
 			}
 		}
 		stage('Deploy Jupyter Notebook') {
