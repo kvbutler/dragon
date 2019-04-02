@@ -102,33 +102,33 @@ pipelineJob('sagemaker-promote-model-QA') {
 
     parameters {
       choiceParam('envName', ['qa'])
-      stringParam('trainInstanceCount', '1', 'Number of instance to use for training')
-      choiceParam('trainInstanceType', [
-         'ml.m5.xlarge',
-         'ml.m5.2xlarge',
-         'ml.m5.4xlarge',
-         'ml.m5.12xlarge',
-         'ml.m5.24xlarge',
-         'ml.m4.xlarge',
-         'ml.m4.2xlarge',
-         'ml.m5.4xlarge',
-         'ml.m5.10xlarge',
-         'ml.m5.16xlarge',
-         'ml.c5.xlarge',
-         'ml.c5.2xlarge',
-         'ml.c5.4xlarge',
-         'ml.c5.9xlarge',
-         'ml.c5.18xlarge',
-         'ml.c4.xlarge',
-         'ml.c4.2xlarge',
-         'ml.c4.4xlarge',
-         'ml.c4.8xlarge',
-         'ml.p2.xlarge',
-         'ml.p2.8xlarge',
-         'ml.p3.2xlarge',
-         'ml.p3.8xlarge',
-         'ml.p3.16xlarge'
-         ], 'Instance type for training')
+      stringParam('initialInstanceCount', '1', 'Initial number of instance to deploy')
+      choiceParam('instanceType', [
+        'ml.m5.xlarge',
+        'ml.m5.2xlarge',
+        'ml.m5.4xlarge',
+        'ml.m5.12xlarge',
+        'ml.m5.24xlarge',
+        'ml.m4.xlarge',
+        'ml.m4.2xlarge',
+        'ml.m5.4xlarge',
+        'ml.m5.12xlarge',
+        'ml.m5.24xlarge',
+        'ml.c5.xlarge',
+        'ml.c5.2xlarge',
+        'ml.c5.4xlarge',
+        'ml.c5.9xlarge',
+        'ml.c5.18xlarge',
+        'ml.c4.xlarge',
+        'ml.c4.2xlarge',
+        'ml.c4.4xlarge',
+        'ml.c4.8xlarge',
+        'ml.p2.xlarge',
+        'ml.p2.8xlarge',
+        'ml.p3.2xlarge',
+        'ml.p3.8xlarge',
+        'ml.p3.16xlarge'
+         ], 'Instance type for deployed model')
     }
     definition {
         cpsScm {
@@ -144,33 +144,33 @@ pipelineJob('sagemaker-promote-model-Prod') {
 
     parameters {
       choiceParam('envName', ['prod'])
-      stringParam('trainInstanceCount', '1', 'Number of instance to use for training')
-      choiceParam('trainInstanceType', [
-         'ml.m5.xlarge',
-         'ml.m5.2xlarge',
-         'ml.m5.4xlarge',
-         'ml.m5.12xlarge',
-         'ml.m5.24xlarge',
-         'ml.m4.xlarge',
-         'ml.m4.2xlarge',
-         'ml.m5.4xlarge',
-         'ml.m5.10xlarge',
-         'ml.m5.16xlarge',
-         'ml.c5.xlarge',
-         'ml.c5.2xlarge',
-         'ml.c5.4xlarge',
-         'ml.c5.9xlarge',
-         'ml.c5.18xlarge',
-         'ml.c4.xlarge',
-         'ml.c4.2xlarge',
-         'ml.c4.4xlarge',
-         'ml.c4.8xlarge',
-         'ml.p2.xlarge',
-         'ml.p2.8xlarge',
-         'ml.p3.2xlarge',
-         'ml.p3.8xlarge',
-         'ml.p3.16xlarge'
-         ], 'Instance type for training')      
+      stringParam('initialInstanceCount', '1', 'Initial number of instance to deploy')
+      choiceParam('instanceType', [
+        'ml.m5.xlarge',
+        'ml.m5.2xlarge',
+        'ml.m5.4xlarge',
+        'ml.m5.12xlarge',
+        'ml.m5.24xlarge',
+        'ml.m4.xlarge',
+        'ml.m4.2xlarge',
+        'ml.m5.4xlarge',
+        'ml.m5.12xlarge',
+        'ml.m5.24xlarge',
+        'ml.c5.xlarge',
+        'ml.c5.2xlarge',
+        'ml.c5.4xlarge',
+        'ml.c5.9xlarge',
+        'ml.c5.18xlarge',
+        'ml.c4.xlarge',
+        'ml.c4.2xlarge',
+        'ml.c4.4xlarge',
+        'ml.c4.8xlarge',
+        'ml.p2.xlarge',
+        'ml.p2.8xlarge',
+        'ml.p3.2xlarge',
+        'ml.p3.8xlarge',
+        'ml.p3.16xlarge'
+         ], 'Instance type for deployed model')
     }
     definition {
         cpsScm {
