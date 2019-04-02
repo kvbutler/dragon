@@ -83,9 +83,13 @@ Resources:
               aws secretsmanager get-secret-value --secret-id GitDeployPubKey | jq .SecretString -r | sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba'  > ~/.ssh/id_rsa.pub
               chmod 600 ~/.ssh/id_rsa*
 
+              git config --global user.name "${UserName}"
+              git config --global user.email ${Email}
+
               cd SageMaker
 
               git clone ${SageMakerRepo}
+
 
               cat > ~/.ssh/config << HOSTCHECKING
               Host *
@@ -121,10 +125,11 @@ Resources:
             Statement:
               -
                 Effect: "Allow"
-                Action: "*"
-                Resource:
+                Action:
                   - "sts:GetFederationToken"
                   - "sts:GetCallerIdentity"
+                Resource: "*"
+
 Outputs:
   BasicNotebookInstanceId:
     Value: !Ref BasicNotebookInstance
