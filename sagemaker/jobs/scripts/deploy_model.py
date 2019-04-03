@@ -73,7 +73,7 @@ else:
     model_name = lower_env_endpoint_config['ProductionVariants'][0]['ModelName']
     new_config_name = "{}-{}".format(endpoint_name, time_string)
     endpoint_config = sess.create_endpoint_config(name=new_config_name, model_name=model_name,
-        initial_instance_count=1, instance_type="ml.m4.xlarge")
+        initial_instance_count=initialInstanceCount, instance_type=instanceType)
 
     if not update_endpoints:
         print ('creating endpoint')
