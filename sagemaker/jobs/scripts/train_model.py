@@ -50,6 +50,8 @@ trainInstanceType=args.trainInstanceType
 #hyperparameters = dict(batch_size=32, data_augmentation=True, learning_rate=.0001,
 #                       width_shift_range=.1, height_shift_range=.1, epochs=1)
 
+print(param_path)
+
 with open(param_path, 'r') as tc:
     hyperparameters = json.load(tc)
 
@@ -73,7 +75,7 @@ tree = sage.estimator.Estimator(image,
                        train_volume_kms_key=kms_key_id,
                        output_kms_key=kms_key_id,
                        model_uri=model_uri, tags=tags)
-                       
+
 tree.fit(training_input)
 ##i need to tag what was the prev model
 ##how do i know it's retraining vs fresh training
