@@ -15,7 +15,7 @@ parser.add_argument('--version', default="latest", help='version/tag to pull fro
 parser.add_argument('--workspace', default=os.getcwd())
 parser.add_argument('--modeluri', default="")
 parser.add_argument('--buildid', default="")
-parser.add_argument('--trainInstanceCount', default="1")
+parser.add_argument('--trainInstanceCount', type=int, default=1)
 parser.add_argument('--trainInstanceType', default="ml.m5.xlarge")
 
 
