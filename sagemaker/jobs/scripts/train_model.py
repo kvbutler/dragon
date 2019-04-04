@@ -80,6 +80,9 @@ tree = sage.estimator.Estimator(image,
                        output_kms_key=kms_key_id,
                        model_uri=model_uri, tags=tags)
 
+
+
+print(training_input)
 tree.fit(training_input)
 ##i need to tag what was the prev model
 ##how do i know it's retraining vs fresh training
