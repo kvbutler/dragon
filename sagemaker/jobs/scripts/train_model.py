@@ -67,6 +67,7 @@ tags = [{"Key": "BuildId", "Value": build_id} ]
 kms_client = boto3.client('kms')
 
 kms_key = kms_client.describe_key(KeyId="arn:aws:kms:{}:{}:alias/forsagemaker".format(region, account))
+output_kms_key = kms_client.describe_key(KeyId="arn:aws:kms:{}:{}:alias/aws/ebs".format(region, account))
 
 kms_key_id = kms_key['KeyMetadata']['KeyId']
 
@@ -76,7 +77,7 @@ tree = sage.estimator.Estimator(image,
                        sagemaker_session=sess,
                       # hyperparameters=hyperparameters,
                        train_volume_kms_key=kms_key_id,
-                       output_kms_key=kms_key_id,
+                       output_kms_key=output_kms_key,
                        model_uri=model_uri, tags=tags)
 
 
