@@ -28,6 +28,7 @@ endpoint_name = "{}-sm-endpoint".format(env_name)
 # S3 prefix
 sess = sage.Session()
 
+account = sess.boto_session.client('sts').get_caller_identity()['Account']
 #role = get_execution_role()
 role = "arn:aws:iam::{}:role/sagemaker-execution-role".format(account)
 

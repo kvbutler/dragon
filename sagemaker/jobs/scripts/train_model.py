@@ -24,9 +24,6 @@ args=parser.parse_args()
 # S3 prefix
 sess = sage.Session()
 
-#role = get_execution_role()
-role = "arn:aws:iam::{}:role/sagemaker-execution-role".format(account)
-
 ## parameterize this
 training_input = "s3://{}/data/training".format(sess.default_bucket())
 
@@ -39,7 +36,8 @@ model_uri = args.modeluri
 build_id = args.buildid
 trainInstanceCount=args.trainInstanceCount
 trainInstanceType=args.trainInstanceType
-
+#role = get_execution_role()
+role = "arn:aws:iam::{}:role/sagemaker-execution-role".format(account)
 
 ## hyperparameter
 
