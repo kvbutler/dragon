@@ -88,9 +88,6 @@ tree.fit(training_input)
 ##how do i know it's retraining vs fresh training
 ##training_job_analytics
 
-print(tree.latest_training_job.name)
-print(tree.model_data)
-
 ssm_client = boto3.client('ssm')
 
 response = ssm_client.put_parameter(

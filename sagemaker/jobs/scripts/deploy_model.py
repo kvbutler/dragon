@@ -14,7 +14,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--workspace', default=os.getcwd())
 parser.add_argument('--buildid', default="")
 parser.add_argument('--envname', default="dev")
-parser.add_argument('--initialInstanceCount', default="1")
+parser.add_argument('--initialInstanceCount', type=int, default=1)
 parser.add_argument('--instanceType', default="ml.m5.xlarge")
 
 args=parser.parse_args()
