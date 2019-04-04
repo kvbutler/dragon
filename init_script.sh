@@ -68,6 +68,6 @@ aws cloudformation deploy --template-file ./infrastructure/sagemaker-bucket.yml 
 
 echo 'Creating training folder'
 account=$(aws sts get-caller-identity --query Account --output text)
-aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key data/training
-aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key data/test
-aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key jobs
+aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key data/training/
+aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key data/test/
+aws s3api put-object --bucket sagemaker-${AWS_DEFAULT_REGION}-${account} --key jobs/
