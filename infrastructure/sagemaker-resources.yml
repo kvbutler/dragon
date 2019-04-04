@@ -75,6 +75,12 @@ Resources:
               - "kms:GenerateDataKey*"
               - "kms:DescribeKey"
             Resource: "*"
+  SageMakerKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: alias/forsagemaker
+      TargetKeyId:
+        Ref: SageMakerKey
 Outputs:
   SagemakerBucketName:
     Description: Name of the created bucket

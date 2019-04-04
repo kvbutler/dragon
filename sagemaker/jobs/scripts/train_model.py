@@ -24,7 +24,8 @@ args=parser.parse_args()
 # S3 prefix
 sess = sage.Session()
 
-role = get_execution_role()
+#role = get_execution_role()
+role = "arn:aws:iam::{}:role/sagemaker-execution-role".format(account)
 
 ## parameterize this
 training_input = "s3://{}/data/training".format(sess.default_bucket())
@@ -67,7 +68,7 @@ tags = [{"Key": "BuildId", "Value": build_id} ]
 
 kms_client = boto3.client('kms')
 
-kms_key = kms_client.describe_key(KeyId="arn:aws:kms:{}:{}:alias/aws/ebs".format(region, account))
+kms_key = kms_client.describe_key(KeyId="arn:aws:kms:{}:{}:alias/forsagemaker".format(region, account))
 
 kms_key_id = kms_key['KeyMetadata']['KeyId']
 
