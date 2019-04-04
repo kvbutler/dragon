@@ -55,6 +55,9 @@ print(param_path)
 with open(param_path, 'r') as tc:
     hyperparameters = json.load(tc)
 
+
+print(hyperparameters)
+
 # hyperparameters = dict(C=6, class_weight=None, dual=False, fit_intercept=True,
 #           intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
 #           penalty='l1', random_state=None, solver='liblinear', tol=0.0001,
