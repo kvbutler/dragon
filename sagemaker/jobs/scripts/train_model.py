@@ -27,7 +27,7 @@ sess = sage.Session()
 role = get_execution_role()
 
 ## parameterize this
-training_input = "s3://{}/training/data".format(sess.default_bucket())
+training_input = "s3://{}/data/training".format(sess.default_bucket())
 
 ## need to pass in image + tag name
 account = sess.boto_session.client('sts').get_caller_identity()['Account']
@@ -68,7 +68,7 @@ kms_key_id = kms_key['KeyMetadata']['KeyId']
 
 tree = sage.estimator.Estimator(image,
                        role, trainInstanceCount, trainInstanceType,
-                       output_path="s3://{}/training/jobs/".format(sess.default_bucket()),
+                       output_path="s3://{}/jobs/".format(sess.default_bucket()),
                        sagemaker_session=sess, hyperparameters=hyperparameters,
                        train_volume_kms_key=kms_key_id,
                        output_kms_key=kms_key_id,
