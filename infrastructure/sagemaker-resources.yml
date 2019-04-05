@@ -74,6 +74,7 @@ Resources:
               - "kms:ReEncrypt*"
               - "kms:GenerateDataKey*"
               - "kms:DescribeKey"
+              - "kms:CreateGrant"
             Resource: "*"
   SageMakerKeyAlias:
     Type: AWS::KMS::Alias

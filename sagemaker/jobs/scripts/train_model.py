@@ -73,7 +73,7 @@ tree = sage.estimator.Estimator(image,
                        role, trainInstanceCount, trainInstanceType,
                        output_path="s3://{}/jobs/".format(sess.default_bucket()),
                        sagemaker_session=sess,
-                      # hyperparameters=hyperparameters,
+                       hyperparameters=hyperparameters,
                        train_volume_kms_key=kms_key_id,
                        model_uri=model_uri, tags=tags)
 
