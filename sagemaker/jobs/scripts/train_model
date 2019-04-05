@@ -9,7 +9,8 @@ pipeline {
 
 		// SCM
 		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
-		GIT_BRANCH = "${GIT_BRANCH ?: "origin/master"}"
+		//GIT_BRANCH = "${GIT_BRANCH ?: "origin/master"}"
+		GIT_BRANCH = "origin/fix_training"
 		sagemaker_workspace = "${WORKSPACE}/sagemaker"
 		imageName = "${params.imageName}"
 		imageVersion = "${params.imageVersion}"

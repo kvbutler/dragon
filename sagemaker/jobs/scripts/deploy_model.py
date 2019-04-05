@@ -14,7 +14,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--workspace', default=os.getcwd())
 parser.add_argument('--buildid', default="")
 parser.add_argument('--envname', default="dev")
-parser.add_argument('--initialInstanceCount', default="1")
+parser.add_argument('--initialInstanceCount', type=int, default=1)
 parser.add_argument('--instanceType', default="ml.m5.xlarge")
 
 args=parser.parse_args()
@@ -28,7 +28,9 @@ endpoint_name = "{}-sm-endpoint".format(env_name)
 # S3 prefix
 sess = sage.Session()
 
-role = get_execution_role()
+account = sess.boto_session.client('sts').get_caller_identity()['Account']
+#role = get_execution_role()
+role = "arn:aws:iam::{}:role/sagemaker-execution-role".format(account)
 
 ssm_client = boto3.client('ssm')
 sagemaker_client = boto3.client('sagemaker')
