@@ -1,0 +1,41 @@
+pipeline {
+    
+    agent any
+
+    environment {
+
+	  // Query the EC2 metadata service and return the current AWS region in which we're running
+	  region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
+
+		// SCM
+		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
+		GIT_BRANCH = "${GIT_BRANCH ?: "origin/master"}"
+		frontend_workspace = "${WORKSPACE}/frontend"
+        deployEnvironment = "${params.Environment}"
+
+    }
+
+    stages {
+		stage('Preparation') {
+		  steps {
+					// $GIT_BRANCH looks like `origin/branch-name` so parse it.
+					git url: "$GIT_URL", branch: "$GIT_BRANCH".tokenize("/")[1]
+			}
+		}
+
+        stage('Create stack') {
+            steps {
+               sh """
+                export AWS_DEFAULT_REGION=${region}
+
+                aws cloudformation create-stack --stack-name ${deployEnvironment}-titanic-frontend --template-url https://s3.amazonaws.com/darwin-dragon-icf-infrastructure/master.yml --parameters ParameterKey=Environment,ParameterValue=${deployEnvironment} --capabilities CAPABILITY_NAMED_IAM
+
+
+               """ 
+
+            }
+
+        }
+
+    }
+}
