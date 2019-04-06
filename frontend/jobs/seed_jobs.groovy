@@ -2,7 +2,10 @@ import javaposse.jobdsl.dsl.*
 
 pipelineJob('create-frontend-infra') {
 
-    choiceParam('Environment', ['dev', 'qa', 'prod'])
+    parameters {
+        choiceParam('Environment', ['dev', 'qa', 'prod'])
+    }
+
     definition {
         cpsScm {
             scm {
