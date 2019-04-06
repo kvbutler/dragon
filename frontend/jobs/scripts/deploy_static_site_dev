@@ -25,7 +25,6 @@ pipeline {
             steps {
               dir("$frontend_workspace/website")
                 sh """ 
-                cd frontend
                 aws s3 cp -r * s3://dev-icf-challenge-site/
                 """
             }
