@@ -16,7 +16,7 @@ pipeline {
             steps {
               dir("$frontend_workspace/website") {
                 sh """ 
-                aws s3 cp -r * s3://dev-icf-challenge-site/
+                aws s3 cp * s3://dev-icf-challenge-site/ --recursive
                 """
               }
             }
