@@ -6,29 +6,20 @@ pipeline {
               region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
             
               GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
-              GIT_BRANCH = "${GIT_BRANCH ?: "origin/master"}"
+              GIT_BRANCH = "master"
               frontend_workspace = "${WORKSPACE}/frontend"
 
         }
 
     stages {
-        stage('Preparation') {
-            steps {
-                    // $GIT_BRANCH looks like `origin/branch-name` so parse it.
-                    git url: "$GIT_URL", branch: "$GIT_BRANCH".tokenize("/")[1]
-            
-            }
-
-        }
-
         stage('Deploy Static Site to S3') {
             steps {
-              dir("$frontend_workspace/website")
+              dir("$frontend_workspace/website") {
                 sh """ 
                 aws s3 cp -r * s3://dev-icf-challenge-site/
                 """
+              }
             }
-
         }
 
     }
