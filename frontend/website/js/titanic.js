@@ -59,7 +59,7 @@ WildRydes.map = WildRydes.map || {};
         $('#signOut').click(function() {
             WildRydes.signOut();
             alert("You have been signed out.");
-            window.location = "signin.html";
+            window.location = "index.html";
         });
         $(WildRydes.map).on('pickupChange', handlePickupChanged);
 
@@ -81,10 +81,18 @@ WildRydes.map = WildRydes.map || {};
         requestButton.prop('disabled', false);
     }
 
+    function getValueFromForm(elementId) {
+        var elt = document.getElementById(elementId);
+
+        return elt.options[elt.selectedIndex].text;
+    }
+
     function handleRequestClick(event) {
-        var pickupLocation = WildRydes.map.selectedPoint;
-        event.preventDefault();
-        requestUnicorn(pickupLocation);
+        var passengerGender = getValueFromForm('gender');
+        var passengerClass = getValueFromForm('passengerClass');
+        console.log("Passenger Gender: " + passengerGender);
+        console.log("Passenger Gender: " + passengerGender);
+        //requestUnicorn(pickupLocation);
     }
 
     function animateArrival(callback) {
