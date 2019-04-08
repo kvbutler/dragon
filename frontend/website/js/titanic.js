@@ -37,20 +37,33 @@ WildRydes.map = WildRydes.map || {};
             }
         });
     }
+    function requestResults(passengerGender, passengerClass) {
+        $.ajax({
+            method: 'POST',
+            url: _config.api.invokeUrl + '/get_results',
+            headers: {
+                Authorization: authToken
+            },
+            data: JSON.stringify({
+                "gender": passengerGender,
+                "passengerClass": passengerClass}
+            ),
+            contentType: 'application/json',
+            success: completeRequest,
+            error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                console.error('Error requesting results: ', textStatus, ', Details: ', errorThrown);
+                console.error('Response: ', jqXHR.responseText);
+                alert('An error occured when getting results:\n' + jqXHR.responseText);
+            }
+        });
+    }
 
     function completeRequest(result) {
         var unicorn;
         var pronoun;
         console.log('Response received from API: ', result);
-        unicorn = result.Unicorn;
-        pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
-        displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
-        animateArrival(function animateCallback() {
-            displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
-            WildRydes.map.unsetLocation();
-            $('#request').prop('disabled', 'disabled');
-            $('#request').text('Set Pickup');
-        });
+        resultMessage = result.receivedGender;
+        displayUpdate('Gender of passenger was ' + resultMessage);
     }
 
     // Register click handler for #request button
@@ -91,7 +104,8 @@ WildRydes.map = WildRydes.map || {};
         var passengerGender = getValueFromForm('gender');
         var passengerClass = getValueFromForm('passengerClass');
         console.log("Passenger Gender: " + passengerGender);
-        console.log("Passenger Gender: " + passengerGender);
+        console.log("Passenger Class" + passengerClass);
+        requestResults(passengerGender, passengerClass);
         //requestUnicorn(pickupLocation);
     }
 
