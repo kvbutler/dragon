@@ -42,7 +42,8 @@ WildRydes.map = WildRydes.map || {};
             method: 'POST',
             url: _config.api.invokeUrl + '/get_results',
             headers: {
-                Authorization: authToken
+                Authorization: authToken,
+                Access-Control-Allow-Headers: x-requested-with 
             },
             data: JSON.stringify({
                 "gender": passengerGender,
@@ -59,8 +60,6 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function completeRequest(result) {
-        var unicorn;
-        var pronoun;
         console.log('Response received from API: ', result);
         resultMessage = result.receivedGender;
         displayUpdate('Gender of passenger was ' + resultMessage);
