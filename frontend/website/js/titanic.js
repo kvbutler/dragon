@@ -41,10 +41,7 @@ WildRydes.map = WildRydes.map || {};
         $.ajax({
             method: 'POST',
             url: _config.api.invokeUrl + '/get_results',
-            headers: {
-                Authorization: authToken,
-                Access-Control-Allow-Headers: x-requested-with 
-            },
+            headers: { 'Authorization': 'authToken', 'Access-Control-Allow-Headers': 'x-requested-with' },
             data: JSON.stringify({
                 "gender": passengerGender,
                 "passengerClass": passengerClass}
