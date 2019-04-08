@@ -10,9 +10,7 @@ pipeline {
 		instanceType = "${params.instanceType}"
 	  email = "${params.email}"
 		userName = "${params.userName}"
-		//repo = "${params.repo}"
-		repo = "git@github.com:seanjoo/sagemaker-flow.git"
-
+		repo = "${params.repo}"
 
 		// SCM
 		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"

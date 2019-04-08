@@ -119,6 +119,7 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
         - "arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess"
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
       Policies:
         -
           PolicyName: "sm-execution-inline-policy"
@@ -132,6 +133,17 @@ Resources:
                   - "sts:GetCallerIdentity"
                 Resource: "*"
 
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${UserName}-${AWS::AccountId}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 Outputs:
   BasicNotebookInstanceId:
     Value: !Ref BasicNotebookInstance
+  UserBucketName:
+    Description: Name of the created bucket
+    Value: !Ref S3Bucket

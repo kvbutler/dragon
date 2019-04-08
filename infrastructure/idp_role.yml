@@ -124,6 +124,26 @@ Resources:
                 "SAML:aud": "https://signin.aws.amazon.com/saml"
       Path: "/"
       ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
+
+  DeveloperRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "developer"
+      MaxSessionDuration: 43200
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Federated: !Ref IdentityProvider
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                "SAML:aud": "https://signin.aws.amazon.com/saml"
+      Path: "/"
+      ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
@@ -132,7 +152,8 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
         - "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
         - "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
-  AdminRolePolicies:
+        - "arn:aws:iam::aws:policy/AWSGlueConsoleSageMakerNotebookFullAccess"
+  DeveloperRolePolicies:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "admin-policy"
@@ -160,4 +181,138 @@ Resources:
             Resource: "*"
       Roles:
         -
-          Ref: "AdminRole"
+          Ref: "DeveloperRole"
+
+  DataEtlRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "data-etl"
+      MaxSessionDuration: 43200
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Federated: !Ref IdentityProvider
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                "SAML:aud": "https://signin.aws.amazon.com/saml"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+        - "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
+        - "arn:aws:iam::aws:policy/AWSGlueConsoleSageMakerNotebookFullAccess"
+  DataEtlRolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "admin-policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - "es:*"
+              - "cloudformation:*"
+              - "sns:*"
+              - "sqs:*"
+              - "ses:*"
+              - "route53:*"
+              - "iam:*"
+              - "codepipeline:*"
+              - "codedeploy:*"
+              - "ssm:*"
+              - "secretsmanager:*"
+              - "ecr:*"
+              - "ecs:*"
+              - "sts:GetFederationToken"
+              - "sts:GetCallerIdentity"
+            Resource: "*"
+      Roles:
+        -
+          Ref: "DataEtlRole"
+
+  DataScientistRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "data-scientist"
+      MaxSessionDuration: 43200
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Federated: !Ref IdentityProvider
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                "SAML:aud": "https://signin.aws.amazon.com/saml"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+        - "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
+        - "arn:aws:iam::aws:policy/AWSGlueConsoleSageMakerNotebookFullAccess"
+  DataScientistRolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "admin-policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - "es:*"
+              - "cloudformation:*"
+              - "sns:*"
+              - "sqs:*"
+              - "ses:*"
+              - "route53:*"
+              - "iam:*"
+              - "codepipeline:*"
+              - "codedeploy:*"
+              - "ssm:*"
+              - "secretsmanager:*"
+              - "ecr:*"
+              - "ecs:*"
+              - "sts:GetFederationToken"
+              - "sts:GetCallerIdentity"
+            Resource: "*"
+      Roles:
+        -
+          Ref: "DataScientistRole"
+
+  AuditRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "audit"
+      MaxSessionDuration: 43200
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Federated: !Ref IdentityProvider
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                "SAML:aud": "https://signin.aws.amazon.com/saml"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/ReadOnlyAccess"
