@@ -38,7 +38,8 @@ WildRydes.map = WildRydes.map || {};
     function completeRequest(result) {
         console.log('Response received from API: ', result);
         resultMessage = result.passengerGender;
-        displayUpdate('Gender of passenger was ' + resultMessage);
+        alert('Gender of passenger was ' + resultMessage);
+        //displayUpdate('Gender of passenger was ' + resultMessage);
     }
 
     // Register click handler for #request button
