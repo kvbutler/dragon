@@ -100,9 +100,7 @@ Resources:
                 apt-get update && apt-get -y install openjdk-8-jdk ntp
               - |
                 cd /opt/
-              - 'wget http://apache.claz.org/nifi/'
-              - Ref: NiFiVersion
-              - /nifi-
+              - 'wget https://s3.amazonaws.com/artifacts-repo-dragon/nifi-'
               - Ref: NiFiVersion
               - |
                 -bin.tar.gz
