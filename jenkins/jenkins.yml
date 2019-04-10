@@ -277,7 +277,9 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
+            VolumeType: "gp2"
             VolumeSize: 100
+            Encrypted: true
       UserData: !Base64
         Fn::Join:
           - ''

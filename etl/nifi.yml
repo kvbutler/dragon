@@ -1,0 +1,137 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploys a single instance of NiFi.
+Parameters:
+  VpcId:
+    Description: vpc id of the existing virtual private cloud
+    Type: AWS::EC2::VPC::Id
+    ConstraintDescription: must be the id of an existing vpc
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  NiFiInstanceType:
+    Description: NiFi EC2 instance type
+    Type: String
+    Default: t2.2xlarge
+  NiFiAMI:
+    Description: NiFi AMI
+    Type: String
+    Default: ami-0a313d6098716f372
+  NiFiVersion:
+    Description: The version of NiFi
+    Type: String
+    Default: 1.9.2
+  InstanceSubnet:
+    Description: subnet id of the existing virtual private cloud that instance should be deployed to
+    Type: AWS::EC2::Subnet::Id
+    ConstraintDescription: must be the id of an existing subnet
+Resources:
+  NifiRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  NifiRolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "nifi_policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - "sts:GetFederationToken"
+              - "sts:GetCallerIdentity"
+            Resource: "*"
+      Roles:
+        -
+          Ref: "NifiRole"
+  NifiInstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Path: "/"
+      Roles:
+        -
+          Ref: "NifiRole"
+  NiFi1Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType:
+        Ref: NiFiInstanceType
+      IamInstanceProfile: !Ref 'NifiInstanceProfile'
+      SecurityGroupIds:
+        - !Ref NiFiInstanceSecurityGroup
+      KeyName:
+        Ref: KeyName
+      ImageId: !Ref NiFiAMI
+      SubnetId: !Ref InstanceSubnet
+      Monitoring: true
+      Tags:
+        - Key: Name
+          Value: !Ref 'AWS::StackName'
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+            Encrypted: true
+      UserData: !Base64
+        Fn::Join:
+            - ''
+            - - |
+                #!/bin/bash -xe
+              - >
+                exec > >(tee /var/log/user-data.log|logger -t user-data -s
+                2>/dev/console) 2>&1
+              - |
+                apt-get update && apt-get -y install openjdk-8-jdk ntp
+              - |
+                cd /opt/
+              - 'wget http://apache.claz.org/nifi/'
+              - Ref: NiFiVersion
+              - /nifi-
+              - Ref: NiFiVersion
+              - |
+                -bin.tar.gz
+              - gunzip -c nifi-
+              - Ref: NiFiVersion
+              - |
+                -bin.tar.gz | tar xvf -
+              - ./nifi-
+              - Ref: NiFiVersion
+              - |
+                /bin/nifi.sh install
+              - |
+                reboot
+  NiFiInstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Group for NiFi instances
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          ToPort: '8080'
+          FromPort: '8080'
+          CidrIp: '0.0.0.0/0'
+        - IpProtocol: tcp
+          ToPort: '22'
+          FromPort: '22'
+          CidrIp: '0.0.0.0/0'
+      VpcId: !Ref VpcId
+Outputs:
+  NiFiVersion:
+    Description: NiFi Version
+    Value:
+      Ref: NiFiVersion
