@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Deploy Lambda to Dev environment') {
             steps {
-              dir("$frontend_workspace/lambda") {
+              dir("$frontend_workspace") {
                 sh """ 
                 cd lambda  
                 zip -X -r index.zip * 
