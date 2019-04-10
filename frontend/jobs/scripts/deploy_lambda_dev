@@ -19,7 +19,7 @@ pipeline {
                 cd lambda  
                 zip -X -r index.zip * 
                 cd ../
-                aws lambda update-function-code --fuction-name dev-RequestFunction --zip-file fileb://index.zip cp ./ s3://dev-icf-challenge-site/ --recursive
+                aws lambda update-function-code --fuction-name dev-RequestFunction --zip-file fileb://index.zip
                 """
               }
             }
