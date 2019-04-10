@@ -11,7 +11,7 @@ from chalice import NotFoundError, BadRequestError
 
 
 import sys, os, base64, datetime, hashlib, hmac
-app = Chalice(app_name='titanic')
+app = Chalice(app_name='backendCall')
 app.debug = True
 
 try:
@@ -41,7 +41,7 @@ def handle_data():
     res = sagemaker.invoke_endpoint(
                     EndpointName='prod-sm-endpoint',
                     #Body=f.getvalue(),
-                    Body=input_csv
+                    Body=input_csv,
                     ContentType='text/csv',
                     Accept='Accept'
                 )
