@@ -1,3 +1,4 @@
 *.pem
 .DS_Store
 frontend/website/js/config.js
+.vscode/
