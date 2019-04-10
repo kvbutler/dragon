@@ -65,7 +65,7 @@ Resources:
       Roles:
         -
           Ref: "NifiRole"
-  NiFi1Instance:
+  NiFiInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType:
