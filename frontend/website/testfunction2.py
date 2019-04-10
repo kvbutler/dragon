@@ -3,8 +3,6 @@ from io import BytesIO
 import boto3
 import csv
 import sys, os, base64, datetime, hashlib, hmac
-from chalice import Chalice
-from chalice import NotFoundError, BadRequestError
 
 def lambda_handler(event, context):
     # TODO implement
