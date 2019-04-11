@@ -42,8 +42,11 @@ training_path = os.path.join(input_path, channel_name)
 
 #### Data transform
 
+#### Data transform
+
 def preprocess(data):
-    transformed = transform(data)
+#    transformed = transform(data)
+    transformed = data
     imputed = impute_missing(transformed)
     return imputed
 
@@ -64,6 +67,7 @@ def impute_missing(df):
     imp = Imputer(missing_values=np.nan, strategy='mean')
     imp.fit(df)
     return pd.DataFrame(imp.transform(df), columns=df.columns)
+
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
