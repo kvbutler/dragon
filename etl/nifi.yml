@@ -114,6 +114,16 @@ Resources:
                 /bin/nifi.sh install
               - |
                 reboot
+
+                #!/bin/bash -xe
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+apt-get update && apt-get -y install openjdk-8-jdk ntp
+cd /opt/
+wget https://s3.amazonaws.com/artifacts-repo-dragon/nifi-1.9.2-bin.tar.gz
+gunzip -c nifi-1.9.2-bin.tar.gz | tar xvf -
+./nifi-1.9.2/bin/nifi.sh install
+reboot
+
   NiFiInstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
