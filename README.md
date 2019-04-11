@@ -2,7 +2,7 @@
 
 
 
-* Setup IDP
+## Setup IDP
  a. Using AWS Console or Cli, deploy infrastructure/idp_role.yml CloudFormation template.
 
  b. Once IDP and IAM roles are setup, use the following url for accessing the AWS Console:
@@ -17,7 +17,7 @@
       ./saml2aws login -a profilename
     ```
 
-* Initial deployment:
+## Initial deployment:
 
  a. Add jenkins password to AWS Secrets Manager
   ```
