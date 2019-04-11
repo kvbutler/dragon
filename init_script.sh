@@ -8,8 +8,8 @@ export ssh_key_pair_name='dragon-ssh-key'
 export jenkins_user='jenkins'
 export jenkins_instance_type="t2.large"
 
-#aws secretsmanager create-secret --name JenkinsPassword --description "Jenkins admin password" --secret-string "add your password"
-#this requires aws cli v1.16.11 - run pip install awscli==1.16.11
+aws secretsmanager create-secret --name JenkinsPassword --description "Jenkins admin password" --secret-string "add your password"
+this requires aws cli v1.16.11 - run pip install awscli==1.16.11
 
 echo 'Generating EC2 ssh key pair'
 export key_pair=$(aws ec2 describe-key-pairs --filters Name=key-name,Values=${ssh_key_pair_name} | jq .KeyPairs[0])
@@ -64,7 +64,7 @@ aws cloudformation deploy --template-file ./jenkins/jenkins.yml \
 
 echo 'Creating s3 bucket for cfn templates'
 aws cloudformation deploy --template-file ./infrastructure/sagemaker-resources.yml \
-  --stack-name ${sagemaker_resources_stack_name}  --no-fail-on-empty-changeset
+  --stack-name ${sagemaker_bucket_stack_name}  --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
 
 echo 'Creating training folder'
 account=$(aws sts get-caller-identity --query Account --output text)

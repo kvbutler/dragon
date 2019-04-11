@@ -1,0 +1,51 @@
+body {
+    font-family: Open Sans,sans-serif;
+    line-height: 1.6em;
+    background-color: #D0D0D0;
+}
+
+.container {
+    background-color: #FFFFFF;
+}
+
+.component .form-group {
+    text-align: left;
+}
+
+.component .group-label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.header {
+    background-color: #4B8DF8;
+    color: #FFFFFF;
+    padding: .25em 1em;
+}
+
+.header > h1 {
+    font-size: 18pt;
+}
+
+.component .form-check-label {
+    font-weight: normal; 
+}
+
+.result {
+    color: #4B8DD8;
+    font-size: 16pt;
+    font-weight: 700;
+}
+
+#signOut {
+    color: #FFFFFF;
+}
+
+#resultsPanel {
+    background-color: rgba(255, 255, 204, 1);
+    padding: 4em;
+    margin: 2em;
+    text-align: center;
+}
