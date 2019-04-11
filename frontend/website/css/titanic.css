@@ -1,0 +1,35 @@
+body {
+    font-family: Open Sans,sans-serif;
+    line-height: 1.6em;
+    background-color: #D0D0D0;
+}
+
+.container {
+    background-color: #FFFFFF;
+}
+
+.component .form-group {
+    text-align: left;
+}
+
+.component .group-label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+h1 {
+    background-color: #4B8DF8;
+    color: #FFFFFF;
+    padding: .25em 1em;
+    font-size: 18pt;
+}
+
+h1.header {
+    margin: 0;
+}
+
+.component .form-check-label {
+    font-weight: normal; 
+}
