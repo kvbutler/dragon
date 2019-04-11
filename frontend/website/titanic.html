@@ -17,7 +17,7 @@
     <div class="component row">
       <div class="col-md-6">
         <h1 class="header">Would you survive the Titanic disaster?</h1>
-        <form>
+        <form id="form">
           <div class="form-group p-1">
             <span class="group-label">What passenger class are you?</span>
             <div class="form-check form-check-inline">
@@ -66,16 +66,16 @@
             </div>
           </div>
           <div class="form-group">
-              <label for="slCabinLocation">Where in the ship is your cabin?</label>
-              <select id="slCabinLocation" class="form-control">
-                <option selected></option>
-                <option value="0">Bow</option>
-                <option value="1">Stern</option>
-                <option value="2">Port</option>
-                <option value="3">Starboard</option>
-              </select>
-            </div>
-          <button id="request" type="submit" class="btn btn-primary pull-left m-1">Submit</button>
+            <label for="slCabinLocation">Where in the ship is your cabin?</label>
+            <select id="slCabinLocation" class="form-control">
+              <option selected></option>
+              <option value="0">Bow</option>
+              <option value="1">Stern</option>
+              <option value="2">Port</option>
+              <option value="3">Starboard</option>
+            </select>
+          </div>
+          <button id="request" type="submit" onsubmit="submit()" class="btn btn-primary pull-left m-1">Submit</button>
         </form>
       </div>
       <script src="js/vendor/jquery-3.1.0.js"></script>

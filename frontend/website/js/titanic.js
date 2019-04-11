@@ -107,4 +107,56 @@ WildRydes.map = WildRydes.map || {};
     function displayUpdate(text) {
         $('#updates').append($('<li>' + text + '</li>'));
     }
+
+    // Form validation and submission
+
+    function validateForm() {
+    
+        let validateRequiredRadio = (groups) => {
+            let valid = true;
+            if (groups) {
+                groups.forEach(group => {
+                    valid = [...group].some(rb => rb.checked);
+                });
+            }
+            return valid;
+        }
+    
+        let validateRequiredText = (inputs) => inputs.some(input => input.value);
+        
+        let rbgPassengerClass = document.getElementsByName('rbgPassengerClass');
+        let rbgGender = document.getElementsByName('rbgGender');
+        let rbgPort = document.getElementsByName('rbgPort');
+    
+        let txtAge = document.getElementById('txtAge');
+        let txtSiblingSpouses = document.getElementById('txtSiblingSpouses');
+        let txtParentsChildren = document.getElementById('txtParentsChildren');
+        let txtCost = document.getElementById('txtCost');
+        let slCabinLocation = document.getElementById('slCabinLocation');
+    
+        let radiosValid = validateRequiredRadio([rbgPassengerClass,
+            rbgGender,
+            rbgPort]);
+    
+        let textValid = validateRequiredText([txtAge,
+            txtSiblingSpouses,
+            txtParentsChildren,
+            txtCost,
+            slCabinLocation]);
+    
+        return radiosValid && textValid;
+    }
+
+    $(() => {
+        $('#form').submit((e) => {
+            e.preventDefault();
+            if (validateForm()) {
+                alert('Stub');
+            } else {
+                alert('All form fields are required.')
+            }
+        });
+    });
+    
+    
 }(jQuery));
