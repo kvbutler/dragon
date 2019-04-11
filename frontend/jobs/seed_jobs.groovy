@@ -35,7 +35,7 @@ pipelineJob('deploy-lambda-dev') {
             scm {
                 git('https://github.com/ICFI/dragon.git', 'master')
             }
-            scriptPath("frontend/jobs/scripts/deploy_lambda_qa")
+            scriptPath("frontend/jobs/scripts/deploy_lambda_dev")
         }
     }
 }
