@@ -28,7 +28,7 @@ pipeline {
                sh """
                 export AWS_DEFAULT_REGION=${region}
 
-                aws cloudformation create-stack --stack-name ${deployEnvironment}-titanic-frontend --template-url https://s3.amazonaws.com/darwin-dragon-icf-cloudformation/master.yml --parameters ParameterKey=Environment,ParameterValue=${deployEnvironment} --capabilities CAPABILITY_NAMED_IAM
+                aws cloudformation create-stack --stack-name ${deployEnvironment}-titanic-frontend --template-url https://s3.amazonaws.com/frontend-infra-cloudformation/master.yml --parameters ParameterKey=Environment,ParameterValue=${deployEnvironment} --capabilities CAPABILITY_NAMED_IAM
 
 
                """ 
