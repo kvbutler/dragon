@@ -23,7 +23,6 @@ body {
     background-color: #4B8DF8;
     color: #FFFFFF;
     padding: .25em 1em;
-    
 }
 
 .header > h1 {
@@ -34,6 +33,19 @@ body {
     font-weight: normal; 
 }
 
+.result {
+    color: #4B8DD8;
+    font-size: 16pt;
+    font-weight: 700;
+}
+
 #signOut {
     color: #FFFFFF;
+}
+
+#resultsPanel {
+    background-color: rgba(255, 255, 204, 1);
+    padding: 4em;
+    margin: 2em;
+    text-align: center;
 }
