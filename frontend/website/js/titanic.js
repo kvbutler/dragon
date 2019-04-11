@@ -20,7 +20,7 @@ WildRydes.map = WildRydes.map || {};
             method: 'POST',
             url: _config.api.invokeUrl + '/get_results',
             crossDomain: true,
-            headers: { "Authorization": "authToken", "Access-Control-Allow-Origin": "*" },
+            headers: { "Authorization": "authToken", "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Header" },
             data: JSON.stringify({
                 "gender": passengerGender,
                 "passengerClass": passengerClass}
