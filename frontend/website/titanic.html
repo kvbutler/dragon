@@ -17,65 +17,65 @@
     <div class="component row">
       <div class="header">
         <h1>Would you survive the Titanic disaster?</h1>
-        <span>All fields are required</span>
+        <span>All fields are required.</span>
       </div>
       <div class="col-md-6">
         <form id="form">
           <div class="form-group p-1">
             <span class="group-label">What passenger class are you?</span>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rbgPassengerClass" id="rbFirstClass" value="0">
+              <input class="form-check-input" type="radio" name="pclass" id="rbFirstClass" value="1">
               <label class="form-check-label" for="rbFirstClass">First Class</label>
-              <input class="form-check-input" type="radio" name="rbgPassengerClass" id="rbSecondClass" value="1">
+              <input class="form-check-input" type="radio" name="pclass" id="rbSecondClass" value="2">
               <label class="form-check-label" for="rbSecondClass">Second Class</label>
-              <input class="form-check-input" type="radio" name="rbgPassengerClass" id="rbThirdClass" value="2">
+              <input class="form-check-input" type="radio" name="pclass" id="rbThirdClass" value="3">
               <label class="form-check-label" for="rbThirdClass">Third Class</label>
             </div>
           </div>
           <div class="form-group p-1">
             <span class="group-label">What is your gender?</span>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rbgGender" id="rbMale" value="0">
+              <input class="form-check-input" type="radio" name="sex" id="rbMale" value="1>
               <label class="form-check-label" for="rbMale">First Class</label>
-              <input class="form-check-input" type="radio" name="rbgGender" id="rbFemale" value="1">
+              <input class="form-check-input" type="radio" name="sex" id="rbFemale" value="2">
               <label class="form-check-label" for="rbFemale">Second Class</label>
             </div>
           </div>
           <div class="form-group p-1">
-            <label for="txtAge">How old are you?</label>
-            <input type="text" class="form-control" id="txtAge" placeholder="22">
+            <label for="age">How old are you?</label>
+            <input type="text" class="form-control" id="age" placeholder="22">
           </div>
           <div class="form-group p-1">
-            <label for="txtSiblingSpouses">How many siblings and spouses were with you?</label>
-            <input type="text" class="form-control" id="txtSiblingSpouses" placeholder="1">
+            <label for="sibsp">How many siblings and spouses were with you?</label>
+            <input type="text" class="form-control" id="sibsp" placeholder="1">
           </div>
           <div class="form-group p-1">
-            <label for="txtParentsChildren">How many parents and children were with you?</label>
-            <input type="text" class="form-control" id="txtParentsChildren" placeholder="2">
+            <label for="parch">How many parents and children were with you?</label>
+            <input type="text" class="form-control" id="parch" placeholder="2">
           </div>
           <div class="form-group p-1">
-            <label for="txtCost">How much did you pay for tour cruise ticket? (in 1910 USD)</label>
-            <input type="text" class="form-control" id="txtCost" placeholder="2">
+            <label for="fare">How much did you pay for tour cruise ticket? (in 1910 USD)</label>
+            <input type="text" class="form-control" id="fare" placeholder="2">
           </div>
           <div class="form-group p-1">
             <span class="group-label">Which port did you embark from?</span>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rbgPort" id="rbCherbourg" value="0">
+              <input class="form-check-input" type="radio" name="embarked" id="rbCherbourg" value="C">
               <label class="form-check-label" for="rbCherbourg">Cherbourg</label>
-              <input class="form-check-input" type="radio" name="rbgPort" id="rbQuenstown" value="1">
+              <input class="form-check-input" type="radio" name="embarked" id="rbQuenstown" value="Q">
               <label class="form-check-label" for="rbQuenstown">Queenstown</label>
-              <input class="form-check-input" type="radio" name="rbgPort" id="rbSouthhampton" value="2">
+              <input class="form-check-input" type="radio" name="embarked" id="rbSouthhampton" value="S">
               <label class="form-check-label" for="rbSouthhampton">Southampton</label>
             </div>
           </div>
           <div class="form-group">
-            <label for="slCabinLocation">Where in the ship is your cabin?</label>
-            <select id="slCabinLocation" class="form-control">
+            <label for="location">Where in the ship is your cabin?</label>
+            <select id="location" class="form-control">
               <option selected></option>
-              <option value="0">Bow</option>
-              <option value="1">Stern</option>
-              <option value="2">Port</option>
-              <option value="3">Starboard</option>
+              <option value="1">Bow</option>
+              <option value="2">Stern</option>
+              <option value="3">Port</option>
+              <option value="4">Starboard</option>
             </select>
           </div>
           <button id="request" type="submit" onsubmit="submit()" class="btn btn-primary pull-left m-1">Submit</button>
