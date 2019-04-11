@@ -78,7 +78,6 @@ def train_and_test(X,y,clf):
 
 
 
-# The function to execute the training.
 def train():
     print('Starting the training.')
     try:
@@ -112,10 +111,10 @@ def train():
         print('validation-accuracy: ' + str(validation_accuracy))
 
         # save the model
-        with open(os.path.join(model_path, 'dragon-model.pkl'), 'w') as out:
+        with open(os.path.join(model_path, 'logistic-regression.pkl'), 'w') as out:
             pickle.dump(clf, out)
         print('Training complete.')
-
+        print (clf)
 
     except Exception as e:
         # Write out an error file. This will be returned as the failureReason in the
@@ -127,7 +126,8 @@ def train():
         print('Exception during training: ' + str(e) + '\n' + trc, file=sys.stderr)
         # A non-zero exit code causes the training job to be marked as Failed.
         sys.exit(255)
-
+        
+        
 if __name__ == '__main__':
     train()
 
