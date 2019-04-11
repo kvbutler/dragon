@@ -1,42 +1,101 @@
 <html>
-<head> 
- <style type="text/css">
- .required span {
-            color: red;
- }
+
+<head>
+  <style type="text/css">
+    .required span {
+      color: red;
+    }
   </style>
-</head>  
-<body>  
-<a id="signOut" href="#">Sign out</a>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/titanic.css">
+</head>
 
-<h1>Titanic Survival Probability Tool</h1>
-<p>---------------------------------------------------------------------------</p>
-<p>*Required</p>
-<!--<form method="post" action="https://2s3t66wpc7.execute-api.us-east-1.amazonaws.com/api/">-->
-<label class="required" for="gender">*Gender</label><br>
-<label for="gender">*Gender</label><br>
-<select id="gender" name="PassengerClass" required>
-  <option value="1">Male</option>
-  <option value="2">Female</option>
-</select>
-
-<br><br><br>
-
-<label for="Passenger Class">*Passenger Class</label><br>
-<select id="passengerClass" name="PassengerClass" required>
-  <option value="1">Class 1</option>
-  <option value="2">Class 2</option>
-  <option value="3">Class 3</option>
-</select><br><br><br><br>
-<!-- <input type="submit" value="Calculate Probability"> -->
-<button id="request" class="btn btn-primary">Calculate Probability</button>
-<!--</form>-->
-    <script src="js/vendor/jquery-3.1.0.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
-    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/cognito-auth.js"></script>
-    <script src="js/titanic.js"></script>
+<body>
+  <div class="container">
+    <a id="signOut" href="#" class="p-1 pull-right">Sign out</a>
+    <div class="component row">
+      <div class="header">
+        <h1>Would you survive the Titanic disaster?</h1>
+        <span>All fields are required</span>
+      </div>
+      <div class="col-md-6">
+        <form id="form">
+          <div class="form-group p-1">
+            <span class="group-label">What passenger class are you?</span>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rbgPassengerClass" id="rbFirstClass" value="0">
+              <label class="form-check-label" for="rbFirstClass">First Class</label>
+              <input class="form-check-input" type="radio" name="rbgPassengerClass" id="rbSecondClass" value="1">
+              <label class="form-check-label" for="rbSecondClass">Second Class</label>
+              <input class="form-check-input" type="radio" name="rbgPassengerClass" id="rbThirdClass" value="2">
+              <label class="form-check-label" for="rbThirdClass">Third Class</label>
+            </div>
+          </div>
+          <div class="form-group p-1">
+            <span class="group-label">What is your gender?</span>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rbgGender" id="rbMale" value="0">
+              <label class="form-check-label" for="rbMale">First Class</label>
+              <input class="form-check-input" type="radio" name="rbgGender" id="rbFemale" value="1">
+              <label class="form-check-label" for="rbFemale">Second Class</label>
+            </div>
+          </div>
+          <div class="form-group p-1">
+            <label for="txtAge">How old are you?</label>
+            <input type="text" class="form-control" id="txtAge" placeholder="22">
+          </div>
+          <div class="form-group p-1">
+            <label for="txtSiblingSpouses">How many siblings and spouses were with you?</label>
+            <input type="text" class="form-control" id="txtSiblingSpouses" placeholder="1">
+          </div>
+          <div class="form-group p-1">
+            <label for="txtParentsChildren">How many parents and children were with you?</label>
+            <input type="text" class="form-control" id="txtParentsChildren" placeholder="2">
+          </div>
+          <div class="form-group p-1">
+            <label for="txtCost">How much did you pay for tour cruise ticket? (in 1910 USD)</label>
+            <input type="text" class="form-control" id="txtCost" placeholder="2">
+          </div>
+          <div class="form-group p-1">
+            <span class="group-label">Which port did you embark from?</span>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rbgPort" id="rbCherbourg" value="0">
+              <label class="form-check-label" for="rbCherbourg">Cherbourg</label>
+              <input class="form-check-input" type="radio" name="rbgPort" id="rbQuenstown" value="1">
+              <label class="form-check-label" for="rbQuenstown">Queenstown</label>
+              <input class="form-check-input" type="radio" name="rbgPort" id="rbSouthhampton" value="2">
+              <label class="form-check-label" for="rbSouthhampton">Southampton</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="slCabinLocation">Where in the ship is your cabin?</label>
+            <select id="slCabinLocation" class="form-control">
+              <option selected></option>
+              <option value="0">Bow</option>
+              <option value="1">Stern</option>
+              <option value="2">Port</option>
+              <option value="3">Starboard</option>
+            </select>
+          </div>
+          <button id="request" type="submit" onsubmit="submit()" class="btn btn-primary pull-left m-1">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <div id="resultsPanel">
+            <span class="group-label">Your probability of survival is:</span>
+            <span class="block result">16.67%</span>
+        </div>
+      </div>
+      <script src="js/vendor/jquery-3.1.0.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+      <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+      <script src="js/config.js"></script>
+      <script src="js/cognito-auth.js"></script>
+      <script src="js/titanic.js"></script>
 </body>
-</html>    
+
+</html>
+</div>
+</div>
