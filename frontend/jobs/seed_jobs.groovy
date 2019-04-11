@@ -40,6 +40,30 @@ pipelineJob('deploy-lambda-dev') {
     }
 }
 
+pipelineJob('deploy-static-site-qa') {
+    stringParam('releaseVersion', '', 'Release tag in Github')
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/ICFI/dragon.git','master')
+            }
+            scriptPath("frontend/jobs/scripts/deploy_static_site_qa")
+        }
+    }
+}
+
+pipelineJob('deploy-lambda-qa') {
+    stringParam('releaseVersion', '', 'Release tag in Github')
+
+    definition {
+        cpsScm {
+            scm {
+                git('https://github.com/ICFI/dragon.git', 'master')
+            }
+            scriptPath("frontend/jobs/scripts/deploy_lambda_qa")
+        }
+    }
+}
 
 
 
