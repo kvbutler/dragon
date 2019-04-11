@@ -8,9 +8,8 @@ def lambda_handler(event, context):
     # TODO implement
     eventBody = json.loads(event['body'])
     print(eventBody)
-    passengerGender = eventBody['gender']
 
-    didPassengerSurvive = sagemaker_request(eventBody['gendger'], eventBody['passengerClass'])
+    didPassengerSurvive = get_sagemaker_request(eventBody['gender'], eventBody['passengerClass'])
 
     if didPassengerSurvive == 1:
         passenger = "Alive"
@@ -27,15 +26,21 @@ def lambda_handler(event, context):
         
     }
 
-def sagemaker_request(passengerGender, passengerClass):
+def get_sagemaker_response(passengerGender, passengerClass):
 
-    sagemaker = boto3.client('sagemaker-runtime')
+    if passengerGender == "Male":
+        genderValue = 1
+    elif passengerGender == "Female":
+        genderValue = 0
 
-    input_csv = "23,{},1,0,0,3.625,0,0,1,0,0,{},0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0".format(passengerGender, passengerClass)
+    class1st = passengerClass == 1
+    class2nd = passengerClass == 2
+    class3rd = passengerClass == 3
 
+    input_csv = "6,{},1,0,0,3.625,0,0,1,0,0,{},{},{},0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0".format(genderValue,class1st,class2nd,class3rd )
+    print(input_csv)
     res = sagemaker.invoke_endpoint(
-                    EndpointName='prod-sm-endpoint',
-                    #Body=f.getvalue(),
+                    EndpointName='dev-sm-endpoint',
                     Body=input_csv,
                     ContentType='text/csv',
                     Accept='Accept'
