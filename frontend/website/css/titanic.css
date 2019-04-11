@@ -19,17 +19,21 @@ body {
     font-weight: 700;
 }
 
-h1 {
+.header {
     background-color: #4B8DF8;
     color: #FFFFFF;
     padding: .25em 1em;
-    font-size: 18pt;
+    
 }
 
-h1.header {
-    margin: 0;
+.header > h1 {
+    font-size: 18pt;
 }
 
 .component .form-check-label {
     font-weight: normal; 
+}
+
+#signOut {
+    color: #FFFFFF;
 }
