@@ -129,7 +129,7 @@
         return valid;
     }
 
-    let validateRequiredText = (inputs) => inputs.some(input => input.value);
+    let validateRequiredText = (inputs) => inputs.every(input => input.value);
     
     let rbgPassengerClass = document.getElementsByName('rbgPassengerClass');
     let rbgGender = document.getElementsByName('rbgGender');
