@@ -108,16 +108,13 @@ def train():
         #####
         clf = RandomForestRegressor()
         clf, score,validation_accuracy = train_and_test(X,y,clf)
-    
+
         print('validation-accuracy: ' + str(validation_accuracy))
 
         # save the model
-        with open(os.path.join(model_path, 'logistic-regression.pkl'), 'w') as out:
+        with open(os.path.join(model_path, 'dragon-model.pkl'), 'w') as out:
             pickle.dump(clf, out)
         print('Training complete.')
-
-        print (logreg)
-
 
 
     except Exception as e:
