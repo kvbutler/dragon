@@ -47,7 +47,7 @@ pipelineJob('deploy-static-site-qa') {
             scm {
                 git('https://github.com/ICFI/dragon.git','master')
             }
-            scriptPath("frontend/jobs/scripts/deploy_static_site_dev")
+            scriptPath("frontend/jobs/scripts/deploy_static_site_qa")
         }
     }
 }
