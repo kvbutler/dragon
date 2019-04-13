@@ -32,20 +32,12 @@ def lambda_handler(event, context):
     #                 Accept='Accept'
                 )
     # return res['Body'].read()
-   #
-   #  return {
-   #      'statusCode': 201,
-   #      'body' : json.dumps({"passengerAlive": res['Body'].read()}),
-   #      'headers' : {
-   #          'Content-Type': 'application/json',
-   #          'Access-Control-Allow-Origin': '*'
-   #      }
-   #
-   # }
+
+    ##  'body' : json.dumps({"passengerAlive": res['Body'].read()}),
 
     return {
         'statusCode': 201,
-        'body' : json.dumps({"passengerAlive": "0"}),
+        'body' : json.dumps({"passengerAlive": 0}),
         'headers' : {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
