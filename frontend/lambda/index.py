@@ -9,7 +9,7 @@ def lambda_handler(event, context):
     # eventBody = json.loads(event['body'])
     # print(eventBody)
 
-
+    print(event)
 
     return {
         'statusCode': 201,
@@ -18,5 +18,4 @@ def lambda_handler(event, context):
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         }
-
     }
