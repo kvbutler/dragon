@@ -76,8 +76,11 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function handleRequestClick(event) {
-        var passengerGender = getValueFromForm('gender');
-        var passengerClass = getValueFromForm('passengerClass');
+        // var passengerGender = getValueFromForm('gender');
+        // var passengerClass = getValueFromForm('passengerClass');
+        var passengerGender = 1;
+        var passengerClass = 1;
+
         console.log("Passenger Gender: " + passengerGender);
         console.log("Passenger Class" + passengerClass);
         requestResults(passengerGender, passengerClass);
