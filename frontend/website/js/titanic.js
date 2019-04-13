@@ -106,11 +106,7 @@ WildRydes.map = WildRydes.map || {};
     function displayUpdate(text) {
         $('#updates').append($('<li>' + text + '</li>'));
     }
-
-
-
-
-// }(jQuery));
+ }(jQuery));
 
 
  // Form validation and submission
