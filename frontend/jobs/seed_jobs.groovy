@@ -41,7 +41,9 @@ pipelineJob('deploy-lambda-dev') {
 }
 
 pipelineJob('deploy-static-site-qa') {
-    stringParam('releaseVersion', '', 'Release tag in Github')
+    parameters {
+      stringParam('releaseVersion', '', 'Release tag in Github')
+    }
     definition {
         cpsScm {
             scm {
@@ -53,8 +55,9 @@ pipelineJob('deploy-static-site-qa') {
 }
 
 pipelineJob('deploy-lambda-qa') {
-    stringParam('releaseVersion', '', 'Release tag in Github')
-
+    parameters {
+      stringParam('releaseVersion', '', 'Release tag in Github')
+    }
     definition {
         cpsScm {
             scm {
@@ -64,6 +67,3 @@ pipelineJob('deploy-lambda-qa') {
         }
     }
 }
-
-
-
