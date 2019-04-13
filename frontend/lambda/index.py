@@ -5,7 +5,7 @@ import csv
 import sys, os, base64, datetime, hashlib, hmac
 
 def lambda_handler(event, context):
-    # TODO implement
+
     eventBody = json.loads(event['body'])
     print(eventBody)
     return {
