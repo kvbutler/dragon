@@ -76,6 +76,16 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function handleRequestClick(event) {
+        var passengerGender = getValueFromForm('gender');
+        var passengerClass = getValueFromForm('passengerClass');
+
+        console.log("Passenger Gender: " + passengerGender);
+        console.log("Passenger Class" + passengerClass);
+        requestResults(passengerGender, passengerClass);
+        //requestUnicorn(pickupLocation);
+    }
+
+    function invoke() {
         // var passengerGender = getValueFromForm('gender');
         // var passengerClass = getValueFromForm('passengerClass');
         var passengerGender = 1;
