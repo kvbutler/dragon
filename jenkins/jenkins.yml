@@ -50,7 +50,7 @@ Parameters:
   JenkinsCookbookRepo:
     Description: git repo containing jenkins config cookbooks
     Type: String
-    Default: https://github.com/ICFI/dragon.git
+    Default: https://github.com/kvbutler/dragon.git
 
 Resources:
   JenkinsLoadBalancer:

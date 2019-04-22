@@ -1,4 +1,51 @@
+### General project ###
+
+# Secrets
 *.pem
+#frontend/website/js/config.js
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+/.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+
+# System Files
 .DS_Store
-frontend/website/js/config.js
-.vscode/
+Thumbs.db
+!.gitkeep
+
+### Frontend ###
+
+# Compiled output
+frontend/website/app/dist
+frontend/website/app/tmp
+frontend/website/app/out-tsc
+frontend/website/app/vendor
+frontend/website/app/app/logs
+
+# Dependencies
+frontend/website/app/node_modules
+
+# Testing
+frontend/website/spa/src/report

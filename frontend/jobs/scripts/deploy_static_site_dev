@@ -1,26 +1,52 @@
 pipeline {
-    agent any
+  agent any
 
-        environment {
-              // Query the EC2 metadata service and return the current AWS region in which we're running
-              region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
-            
-              GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
-              GIT_BRANCH = "master"
-              frontend_workspace = "${WORKSPACE}/frontend"
+  environment {
+        // Query the EC2 metadata service and return the current AWS region in which we're running
+        region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
+      
+        GIT_URL = "${GIT_URL ?: "https://github.com/kvbutler/dragon.git"}"
+        GIT_BRANCH = "master"
+        frontend_workspace = "${WORKSPACE}/frontend"
+  }
 
+  stages {
+    stage('Install') {
+      steps {
+        dir("$frontend_workspace/website/spa") {
+          sh script: 'npm install'
         }
-
-    stages {
-        stage('Deploy Static Site to S3') {
-            steps {
-              dir("$frontend_workspace/website") {
-                sh """ 
-                aws s3 cp ./ s3://dev-icf-challenge-site-383168094282/ --recursive
-                """
-              }
-            }
-        }
-
+      }
     }
+    stage('Build') {
+      steps {
+         dir("$frontend_workspace/website/spa") {
+          sh script: 'ng build --configuration=dev'
+        }
+      }
+    }
+    stage('Test') {
+      steps {
+        dir("$frontend_workspace/website/spa") {
+          sh script: 'ng test'
+        }
+      }
+    }
+    stage('Deploy') {
+      steps {
+        dir("$frontend_workspace/website/spa") {
+          sh script: 'aws s3 cp ./dist/spa/ s3://ngspa/ --recursive'
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      dir("$frontend_workspace/website/spa") {
+        junit 'src/report/junit/junit.xml'
+      }
+    }
+  }
+
 }

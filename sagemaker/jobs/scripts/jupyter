@@ -13,7 +13,7 @@ pipeline {
 		repo = "${params.repo}"
 
 		// SCM
-		GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
+		GIT_URL = "${GIT_URL ?: "https://github.com/kvbutler/dragon.git"}"
 		sagemaker_workspace = "${WORKSPACE}/sagemaker"
 
 	}

@@ -4,7 +4,7 @@ pipelineJob('sagemaker-algorithm-build') {
     definition {
         cpsScm {
             scm {
-                git('https://github.com/ICFI/dragon.git')
+                git('https://github.com/kvbutler/dragon.git')
             }
             scriptPath("sagemaker/jobs/scripts/build_algorithm_image")
         }
@@ -47,7 +47,7 @@ pipelineJob('sagemaker-train-model') {
     definition {
         cpsScm {
             scm {
-                git('https://github.com/ICFI/dragon.git')
+                git('https://github.com/kvbutler/dragon.git')
             }
             scriptPath("sagemaker/jobs/scripts/train_model")
         }
@@ -91,7 +91,7 @@ pipelineJob('sagemaker-retrain-model') {
     definition {
         cpsScm {
             scm {
-                git('https://github.com/ICFI/dragon.git')
+                git('https://github.com/kvbutler/dragon.git')
             }
             scriptPath("sagemaker/jobs/scripts/train_model")
         }
@@ -133,7 +133,7 @@ pipelineJob('sagemaker-promote-model-QA') {
     definition {
         cpsScm {
             scm {
-                git('https://github.com/ICFI/dragon.git')
+                git('https://github.com/kvbutler/dragon.git')
             }
             scriptPath("sagemaker/jobs/scripts/deploy_model")
         }
@@ -175,7 +175,7 @@ pipelineJob('sagemaker-promote-model-Prod') {
     definition {
         cpsScm {
             scm {
-                git('https://github.com/ICFI/dragon.git')
+                git('https://github.com/kvbutler/dragon.git')
             }
             scriptPath("sagemaker/jobs/scripts/deploy_model")
         }
@@ -234,7 +234,7 @@ pipelineJob('sagemaker-deploy-jupyter-notebook') {
     definition {
         cpsScm {
             scm {
-                git('https://github.com/ICFI/dragon.git')
+                git('https://github.com/kvbutler/dragon.git')
             }
             scriptPath("sagemaker/jobs/scripts/jupyter")
         }

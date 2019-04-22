@@ -5,7 +5,7 @@ pipeline {
               // Query the EC2 metadata service and return the current AWS region in which we're running
               region = sh (script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region', returnStdout: true).trim()
             
-              GIT_URL = "${GIT_URL ?: "https://github.com/ICFI/dragon.git"}"
+              GIT_URL = "${GIT_URL ?: "https://github.com/kvbutler/dragon.git"}"
               GIT_BRANCH = "master"
               frontend_workspace = "${WORKSPACE}/frontend"
 
