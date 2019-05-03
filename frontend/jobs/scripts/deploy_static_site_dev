@@ -36,7 +36,7 @@ pipeline {
       steps {
         dir("$frontend_workspace/website/spa") {
           sh script: 'aws s3 cp ./dist/spa/ s3://ngspa/ --recursive'
-          sh script: 'aws s3 cp ./dist/spa/index.html s3://bucket/index.html --region $region --metadata-directive REPLACE --cache-control max-age=0'
+          sh script: 'aws s3 cp ./dist/spa/index.html s3://ngspa/index.html --region $region --metadata-directive REPLACE --cache-control max-age=0'
         }
       }
     }
